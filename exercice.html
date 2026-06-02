@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEC · Je m'exerce</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f0e6; --card:#fffdf8; --alt:#fbf7ee;
+  --border:#ddd6c6; --border-strong:#c3bba6;
+  --ink:#2a2620; --muted:#6e685c;
+  --burgundy:#8b3a2e; --burgundy-d:#6e2c22;
+  --gold:#c89b3c; --green:#4a7c4f; --danger:#b15543;
+  --accent:#8b3a2e; --accent-bg:#f5e8d8;
+  --shadow:0 1px 2px rgba(42,38,32,.05), 0 8px 28px rgba(42,38,32,.07);
+  --shadow-lg:0 2px 6px rgba(42,38,32,.08), 0 18px 48px rgba(42,38,32,.12);
+  --radius:16px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:
+    radial-gradient(1200px 600px at 50% -200px, #fbf8ef 0%, rgba(251,248,239,0) 60%),
+    var(--bg);
+  color:var(--ink);
+  font-family:'Atkinson Hyperlegible', system-ui, sans-serif;
+  font-size:18px; line-height:1.6;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:860px;margin:0 auto;padding:28px 20px 80px}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:600;line-height:1.15;letter-spacing:-.01em;margin:0}
+
+/* ---------- Top bar ---------- */
+.topbar{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.crest{width:46px;height:46px;flex:none;border-radius:12px;
+  background:linear-gradient(145deg,var(--burgundy),var(--burgundy-d));
+  display:grid;place-items:center;color:#f7ecd9;box-shadow:var(--shadow);
+  font-family:'Fraunces',serif;font-weight:700;font-size:22px}
+.topbar .t1{font-family:'Fraunces',serif;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.topbar .t2{font-family:'Fraunces',serif;font-size:22px;font-weight:600}
+.rule{height:2px;border:0;margin:14px 0 26px;
+  background:linear-gradient(90deg,var(--burgundy) 0%, var(--gold) 22%, transparent 60%)}
+
+/* ---------- Home ---------- */
+.lead{font-size:21px;color:var(--ink);margin:0 0 4px}
+.lead .big{font-family:'Fraunces',serif;font-size:34px;display:block;margin-bottom:8px}
+.sub{color:var(--muted);margin:0 0 28px}
+.section-label{font-family:'Fraunces',serif;font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin:30px 0 12px;display:flex;align-items:center;gap:10px}
+.section-label::after{content:"";flex:1;height:1px;background:var(--border)}
+
+.seg{display:inline-flex;background:var(--alt);border:1px solid var(--border);border-radius:999px;padding:4px;gap:2px}
+.seg button{border:0;background:transparent;font:inherit;font-size:15px;color:var(--muted);
+  padding:7px 16px;border-radius:999px;cursor:pointer;transition:.15s}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow);font-weight:700}
+
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:8px}
+@media(max-width:620px){.grid{grid-template-columns:1fr}}
+.tile{position:relative;text-align:left;border:1px solid var(--border);background:var(--card);
+  border-radius:14px;padding:16px 16px 16px 18px;cursor:pointer;font:inherit;color:var(--ink);
+  transition:transform .14s, box-shadow .14s, border-color .14s; overflow:hidden}
+.tile::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--tcol,#bbb)}
+.tile:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--border-strong)}
+.tile .tname{font-family:'Fraunces',serif;font-size:18px;font-weight:600;line-height:1.2}
+.tile .tmeta{font-size:13px;color:var(--muted);margin-top:6px}
+.tile.sel{outline:3px solid var(--tcol);outline-offset:-1px}
+
+.chips{display:flex;flex-wrap:wrap;gap:9px}
+.chip{border:1px solid var(--border);background:var(--card);border-radius:999px;
+  padding:9px 15px;font:inherit;font-size:15px;cursor:pointer;color:var(--ink);transition:.14s}
+.chip:hover{border-color:var(--burgundy);color:var(--burgundy)}
+.chip.sel{background:var(--burgundy);border-color:var(--burgundy);color:#fff;font-weight:700}
+
+.cta-row{margin-top:34px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.btn{font:inherit;font-weight:700;border:0;border-radius:12px;padding:14px 26px;cursor:pointer;transition:.15s}
+.btn-primary{background:var(--burgundy);color:#fff;box-shadow:var(--shadow)}
+.btn-primary:hover{background:var(--burgundy-d);transform:translateY(-1px)}
+.btn-primary:disabled{background:#c9bfae;cursor:not-allowed;transform:none}
+.btn-ghost{background:transparent;color:var(--burgundy);border:1.5px solid var(--border-strong)}
+.btn-ghost:hover{border-color:var(--burgundy);background:var(--accent-bg)}
+.btn-soft{background:var(--alt);color:var(--ink);border:1px solid var(--border)}
+.btn-soft:hover{border-color:var(--border-strong)}
+.hint{color:var(--muted);font-size:15px}
+
+/* ---------- Exercise ---------- */
+.ex-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+  background:var(--accent-bg);color:var(--accent);border-radius:999px;padding:7px 14px;
+  border:1px solid color-mix(in srgb,var(--accent) 25%, transparent)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.linkback{background:none;border:0;font:inherit;color:var(--muted);cursor:pointer;font-size:15px}
+.linkback:hover{color:var(--burgundy)}
+
+.qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:26px 26px 28px;border-top:4px solid var(--accent)}
+.qop{font-family:'Fraunces',serif;font-size:14px;letter-spacing:.04em;color:var(--accent);font-weight:600;margin-bottom:6px}
+.qprompt{font-family:'Fraunces',serif;font-size:23px;font-weight:600;line-height:1.3;margin-bottom:4px}
+.qbullets{margin:14px 0 0;padding:0;list-style:none}
+.qbullets li{position:relative;padding:7px 0 7px 26px;border-bottom:1px dashed var(--border)}
+.qbullets li:last-child{border-bottom:0}
+.qbullets li::before{content:"";position:absolute;left:4px;top:15px;width:8px;height:8px;
+  border-radius:2px;transform:rotate(45deg);background:var(--accent)}
+.qinstr{font-size:16px;color:var(--muted);background:var(--alt);border-left:3px solid var(--gold);
+  border-radius:0 10px 10px 0;padding:11px 15px;margin-top:16px}
+
+/* documents */
+.docs{margin-top:22px;display:grid;gap:14px}
+.doc{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--alt)}
+.doc .dh{font-family:'Fraunces',serif;font-weight:600;font-size:15px;color:var(--ink);
+  padding:10px 14px;border-bottom:1px solid var(--border);background:#efe8d6}
+.doc .db{padding:14px}
+.doc .db.row{display:flex;gap:14px;align-items:flex-start}
+.doc img{display:block;max-width:100%;border-radius:8px;border:1px solid var(--border)}
+.doc .di{flex:none;border-radius:8px}
+.doc .dtext{font-size:16px;line-height:1.55}
+.src{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.4;font-style:italic}
+.noimg{padding:18px;text-align:center;color:var(--muted);font-size:14px;background:repeating-linear-gradient(45deg,#f0ebdd,#f0ebdd 10px,#ece6d6 10px,#ece6d6 20px);border-radius:8px}
+
+/* inputs */
+.answer{margin-top:24px}
+.answer h3{font-family:'Fraunces',serif;font-size:16px;margin-bottom:10px;color:var(--ink)}
+textarea{width:100%;min-height:150px;resize:vertical;font:inherit;font-size:17px;line-height:1.7;
+  padding:14px 16px;border:1.5px solid var(--border-strong);border-radius:12px;background:#fff;color:var(--ink);
+  background-image:repeating-linear-gradient(transparent,transparent 33px,#eee5d2 33px,#eee5d2 34px);background-attachment:local}
+textarea:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-bg)}
+.lbl-row{display:flex;align-items:center;gap:12px;margin:8px 0}
+.lbl-row .lname{flex:1;font-size:16px}
+.lbl-row input.short{width:110px;font:inherit;font-size:17px;text-align:center;padding:10px;
+  border:1.5px solid var(--border-strong);border-radius:10px;background:#fff}
+.lbl-row input.short:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-bg)}
+
+table.cbx{border-collapse:collapse;width:100%;margin-top:6px}
+table.cbx th,table.cbx td{border:1px solid var(--border);padding:11px 12px;text-align:center}
+table.cbx th{background:var(--alt);font-family:'Fraunces',serif;font-weight:600;font-size:15px}
+table.cbx td.rh{text-align:left;font-weight:700;background:var(--alt)}
+table.cbx input{width:22px;height:22px;accent-color:var(--accent);cursor:pointer}
+
+.ba{display:grid;gap:10px;margin-top:6px}
+.ba .item{display:flex;align-items:center;gap:12px;background:var(--alt);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+.ba .item .iname{flex:1;font-weight:700}
+.toggle{display:inline-flex;border:1px solid var(--border-strong);border-radius:999px;overflow:hidden}
+.toggle button{border:0;background:#fff;font:inherit;font-size:14px;padding:8px 14px;cursor:pointer;color:var(--muted)}
+.toggle button.on{background:var(--accent);color:#fff;font-weight:700}
+
+.chrono .slot{display:flex;align-items:center;gap:12px;margin:8px 0}
+.chrono .rank{font-family:'Fraunces',serif;font-weight:700;color:var(--accent);min-width:150px}
+.chrono select{font:inherit;font-size:16px;padding:10px 12px;border:1.5px solid var(--border-strong);border-radius:10px;background:#fff;flex:1}
+
+/* feedback */
+.fb{margin-top:22px;border-radius:14px;padding:20px 22px;border:1px solid var(--border);animation:rise .35s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.fb.good{background:#eef5ec;border-color:#cfe3c9}
+.fb.work{background:#fbf2e6;border-color:#f0ddbf}
+.fb.ai{background:#f3f0fa;border-color:#ddd5ee}
+.fb h3{font-family:'Fraunces',serif;font-size:19px;margin-bottom:10px;display:flex;align-items:center;gap:9px}
+.fb .ic{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;flex:none}
+.fb.good .ic{background:var(--green)} .fb.work .ic{background:var(--gold)} .fb.ai .ic{background:#7a5ea8}
+.fb p{margin:8px 0}
+.fb .line{display:flex;gap:10px;align-items:flex-start;padding:6px 0}
+.fb .mk{font-weight:700;flex:none}
+.fb .mk.ok{color:var(--green)} .fb .mk.no{color:var(--danger)}
+.fb .blk{margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)}
+.fb .blk b{font-family:'Fraunces',serif}
+.model{margin-top:16px;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--green);
+  border-radius:0 10px 10px 0;padding:14px 16px;font-size:16px;line-height:1.6}
+.model .mlab{font-family:'Fraunces',serif;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--green);font-weight:700;margin-bottom:6px}
+.spin{display:inline-block;width:18px;height:18px;border:3px solid var(--accent-bg);border-top-color:var(--accent);border-radius:50%;animation:sp .8s linear infinite;vertical-align:-3px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.foot{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap}
+.hidden{display:none!important}
+.fade{animation:fade .4s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.banner{font-size:13px;color:var(--muted);background:var(--alt);border:1px dashed var(--border-strong);
+  border-radius:10px;padding:8px 12px;margin-bottom:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="crest">H</div>
+    <div>
+      <div class="t1">Histoire et éducation à la citoyenneté</div>
+      <div class="t2">Je m'exerce</div>
+    </div>
+  </div>
+  <hr class="rule">
+
+  <div id="dataBanner" class="banner hidden"></div>
+
+  <!-- ============ HOME ============ -->
+  <section id="screen-home" class="fade">
+    <p class="lead"><span class="big">Sur quoi veux-tu t'exercer&nbsp;?</span></p>
+    <p class="sub">Choisis un sujet ou une opération intellectuelle. Tu réponds, et tu reçois une rétroaction pour t'améliorer.</p>
+
+    <div class="section-label">Niveau</div>
+    <div class="seg" id="levelSeg">
+      <button data-lvl="all" class="on">Tous</button>
+      <button data-lvl="1">Secondaire&nbsp;1</button>
+      <button data-lvl="2">Secondaire&nbsp;2</button>
+    </div>
+
+    <div class="section-label">Un sujet (réalité sociale)</div>
+    <div class="grid" id="realiteGrid"></div>
+
+    <div class="section-label">Ou une opération intellectuelle</div>
+    <div class="chips" id="opChips"></div>
+
+    <div class="cta-row">
+      <button class="btn btn-primary" id="startBtn" disabled>Commencer&nbsp;→</button>
+      <button class="btn btn-ghost" id="randomBtn">🎲 Au hasard</button>
+      <span class="hint" id="poolHint"></span>
+    </div>
+  </section>
+
+  <!-- ============ EXERCISE ============ -->
+  <section id="screen-ex" class="hidden">
+    <div class="ex-top">
+      <span class="badge"><span class="dot"></span><span id="exReal"></span></span>
+      <button class="linkback" id="backBtn">← Changer de sujet</button>
+    </div>
+    <div class="qcard" id="qcard"></div>
+    <div class="answer" id="answerZone"></div>
+    <div id="feedbackZone"></div>
+    <div class="foot" id="footZone"></div>
+  </section>
+</div>
+
+<!-- embedded demo data injected here -->
+<script id="embedded">/* version de production : les questions sont chargees depuis assets/data/questions.json */</script>
+
+<script>
+/* ======================================================================
+   CONFIGURATION
+   ----------------------------------------------------------------------
+   RELAY_URL : adresse de ton relais sécurisé (Cloudflare Worker, etc.)
+   qui détient ta clé API. Laisse "" pour un site 100% statique
+   (les questions fermées sont corrigées; les questions rédigées
+   affichent directement la réponse modèle, sans rétroaction IA).
+   Ex : RELAY_URL = "https://hec-relais.ton-compte.workers.dev";
+   ====================================================================== */
+const RELAY_URL = "";
+
+/* ====================== METADATA (stable) ====================== */
+const REALITES = [
+  {id:"sedentarisation",titre:"La sédentarisation",niveau:1,c:"#a86a3d",bg:"#f0e2d4"},
+  {id:"emergence-civilisation",titre:"L'émergence d'une civilisation",niveau:1,c:"#2c5a7a",bg:"#dde4ed"},
+  {id:"premiere-experience-democratie",titre:"Une première expérience de démocratie",niveau:1,c:"#9a3a30",bg:"#ecdbd6"},
+  {id:"romanisation",titre:"La romanisation",niveau:1,c:"#5e7868",bg:"#dfe6e1"},
+  {id:"christianisation-occident",titre:"La christianisation de l'Occident",niveau:1,c:"#b08840",bg:"#f3ead4"},
+  {id:"renouvellement-vision-homme",titre:"Le renouvellement de la vision de l'Homme",niveau:2,c:"#4a7c4f",bg:"#e8f0e3"},
+  {id:"expansion-europeenne",titre:"L'expansion européenne dans le monde",niveau:2,c:"#a06642",bg:"#f5e8dc"},
+  {id:"revolution-americaine",titre:"La Révolution américaine",niveau:2,c:"#6a4a8a",bg:"#ece4f0"},
+  {id:"industrialisation",titre:"L'industrialisation",niveau:2,c:"#4a6a82",bg:"#dde6ee"},
+  {id:"expansion-monde-industriel",titre:"L'expansion du monde industriel",niveau:2,c:"#7a3a4a",bg:"#ecdfe2"},
+  {id:"reconnaissance-libertes-droits-civils",titre:"La reconnaissance des libertés et des droits civils",niveau:2,c:"#586377",bg:"#e3e5ea"},
+];
+const REAL_BY_ID = Object.fromEntries(REALITES.map(r=>[r.id,r]));
+const OPERATIONS = [
+  "Établir des faits","Situer dans l'espace","Situer dans le temps",
+  "Établir des liens de causalité","Mettre en relation des faits",
+  "Déterminer des causes et des conséquences","Dégager des différences et des similitudes",
+  "Déterminer des changements et des continuités"
+];
+
+/* ====================== STATE ====================== */
+let QUESTIONS = [];
+let IMGMAP = (window.HEC_IMGMAP||{});
+let usingSample = false;
+const sel = {level:"all", realite:null, op:null};
+let pool = [], current = null;
+
+/* ====================== DATA LOADING ====================== */
+async function loadData(){
+  try{
+    const res = await fetch("assets/data/questions.json",{cache:"no-store"});
+    if(!res.ok) throw 0;
+    const j = await res.json();
+    QUESTIONS = j.questions || [];
+    if(!QUESTIONS.length) throw 0;
+  }catch(e){
+    QUESTIONS = (window.HEC_SAMPLE||[]);
+    usingSample = QUESTIONS.length>0;
+  }
+  const b = document.getElementById("dataBanner");
+  if(!QUESTIONS.length){
+    b.classList.remove("hidden");
+    b.innerHTML = "⚠️ <b>Questions introuvables.</b> Vérifie que <code>exercice.html</code> est bien placé à la racine, juste à côté du dossier <code>assets/</code> (qui contient <code>assets/data/questions.json</code>).";
+    return;
+  }
+  if(usingSample){
+    b.classList.remove("hidden");
+    b.innerHTML = "🧪 <b>Mode démonstration</b> — "+QUESTIONS.length+" questions d'exemple. Déposé dans ton dépôt (à côté du dossier <code>assets/</code>), il chargera automatiquement les 354 questions et toutes les images.";
+  }
+  buildHome();
+}
+function resolveImg(url){
+  if(!url) return null;
+  if(usingSample) return IMGMAP[url] || null;   // demo: only embedded images exist
+  return url;                                    // deployed: real relative path
+}
+
+/* ====================== HOME ====================== */
+function buildHome(){
+  const grid = document.getElementById("realiteGrid");
+  grid.innerHTML = "";
+  const counts = {};
+  QUESTIONS.forEach(q=>counts[q.realite_sociale_id]=(counts[q.realite_sociale_id]||0)+1);
+  REALITES.forEach(r=>{
+    if(!counts[r.id]) return;
+    const n = filteredCount({realite:r.id});
+    const el = document.createElement("button");
+    el.className="tile"; el.style.setProperty("--tcol",r.c);
+    el.innerHTML = `<div class="tname">${r.titre}</div>
+      <div class="tmeta">Secondaire ${r.niveau} · ${counts[r.id]} questions</div>`;
+    el.onclick=()=>{ sel.realite = (sel.realite===r.id)?null:r.id; if(sel.realite) sel.op=null; refreshHome(); };
+    el.dataset.id=r.id;
+    grid.appendChild(el);
+  });
+  const chips = document.getElementById("opChips");
+  chips.innerHTML="";
+  OPERATIONS.forEach(op=>{
+    const el=document.createElement("button");
+    el.className="chip"; el.textContent=op; el.dataset.op=op;
+    el.onclick=()=>{ sel.op=(sel.op===op)?null:op; if(sel.op) sel.realite=null; refreshHome(); };
+    chips.appendChild(el);
+  });
+  document.querySelectorAll("#levelSeg button").forEach(b=>{
+    b.onclick=()=>{ sel.level=b.dataset.lvl;
+      document.querySelectorAll("#levelSeg button").forEach(x=>x.classList.toggle("on",x===b));
+      sel.realite=null; sel.op=null; refreshHome(); };
+  });
+  document.getElementById("startBtn").onclick=()=>startSession();
+  document.getElementById("randomBtn").onclick=()=>{ sel.realite=null; sel.op=null; startSession(true); };
+  document.getElementById("backBtn").onclick=()=>showHome();
+  refreshHome();
+}
+function levelOk(q){ return sel.level==="all" || String(q.niveau)===sel.level; }
+function filteredCount(over={}){
+  const rl=over.realite!==undefined?over.realite:sel.realite;
+  return QUESTIONS.filter(q=>levelOk(q) && (!rl||q.realite_sociale_id===rl) && (!sel.op||q.operation===sel.op)).length;
+}
+function refreshHome(){
+  document.querySelectorAll("#realiteGrid .tile").forEach(t=>{
+    t.classList.toggle("sel", t.dataset.id===sel.realite);
+    t.style.opacity = (sel.level==="all"||REAL_BY_ID[t.dataset.id].niveau===+sel.level)?"1":".4";
+  });
+  document.querySelectorAll("#opChips .chip").forEach(c=>c.classList.toggle("sel",c.dataset.op===sel.op));
+  const n = filteredCount();
+  const ready = !!(sel.realite||sel.op);
+  document.getElementById("startBtn").disabled = !ready || n===0;
+  document.getElementById("poolHint").textContent = ready ? `${n} exercice${n>1?"s":""} disponible${n>1?"s":""}` : "Choisis un sujet ou une opération";
+}
+
+/* ====================== SESSION ====================== */
+function startSession(randomAny=false){
+  pool = QUESTIONS.filter(q=>levelOk(q) &&
+      (randomAny || ((!sel.realite||q.realite_sociale_id===sel.realite) && (!sel.op||q.operation===sel.op))));
+  if(!pool.length) return;
+  nextQuestion();
+  showEx();
+}
+function nextQuestion(){
+  if(!pool.length){ showHome(); return; }
+  const i = Math.floor(Math.random()*pool.length);
+  current = pool.splice(i,1)[0];
+  renderQuestion(current);
+}
+function showHome(){ document.getElementById("screen-ex").classList.add("hidden");
+  const h=document.getElementById("screen-home"); h.classList.remove("hidden"); h.classList.add("fade");
+  window.scrollTo({top:0,behavior:"smooth"}); }
+function showEx(){ document.getElementById("screen-home").classList.add("hidden");
+  const e=document.getElementById("screen-ex"); e.classList.remove("hidden"); e.classList.add("fade");
+  window.scrollTo({top:0,behavior:"smooth"}); }
+
+/* ====================== RENDER QUESTION ====================== */
+function applyAccent(q){
+  const r = REAL_BY_ID[q.realite_sociale_id] || {c:"#8b3a2e",bg:"#f5e8d8"};
+  document.documentElement.style.setProperty("--accent",r.c);
+  document.documentElement.style.setProperty("--accent-bg",r.bg);
+  document.getElementById("exReal").textContent = (r.titre||"") ;
+}
+function renderQuestion(q){
+  applyAccent(q);
+  const b = q.questionBody;
+  let html = `<div class="qop">${q.operation} · n°${q.numero}</div>
+    <div class="qprompt">${esc(b.prompt||"")}</div>`;
+  if(b.bullets&&b.bullets.length){
+    html += `<ul class="qbullets">`+b.bullets.map(x=>`<li>${esc(x)}</li>`).join("")+`</ul>`;
+  }
+  if(b.instructions&&b.instructions.length){
+    html += `<div class="qinstr">`+b.instructions.map(s=>s.bold?`<b>${esc(s.text)}</b>`:esc(s.text)).join("")+`</div>`;
+  }
+  // documents
+  if(q.documents&&q.documents.length){
+    html += `<div class="docs">`+q.documents.map(renderDoc).join("")+`</div>`;
+  }
+  document.getElementById("qcard").innerHTML = html;
+  renderAnswer(q);
+  document.getElementById("feedbackZone").innerHTML="";
+  renderFoot(false);
+}
+function renderDoc(d){
+  const img = resolveImg(d.imageUrl);
+  let body="";
+  const hasImg = !!d.imageUrl;
+  const widthCss = d.imageWidthCm ? `style="width:${Math.min(d.imageWidthCm*38,330)}px"` : "";
+  if(hasImg && d.text){
+    body = `<div class="db row">
+        ${img?`<img class="di" ${widthCss} src="${img}" alt="">`:`<div class="di noimg" ${widthCss?widthCss:'style="width:150px"'}>🖼️ image</div>`}
+        <div class="dtext">${esc(d.text)}</div></div>`;
+  } else if(hasImg){
+    body = `<div class="db">${img?`<img ${widthCss} src="${img}" alt="">`:`<div class="noimg">🖼️ Document iconographique (visible une fois déposé dans le dépôt)</div>`}</div>`;
+  } else {
+    body = `<div class="db"><div class="dtext">${esc(d.text||"")}</div></div>`;
+  }
+  const src = (d.sources&&d.sources.length)?`<div class="db" style="padding-top:0"><div class="src">${d.sources.map(esc).join("<br>")}</div></div>`:"";
+  return `<div class="doc">${d.title?`<div class="dh">${esc(d.title)}</div>`:""}${body}${src}</div>`;
+}
+
+/* ====================== RENDER ANSWER INPUTS ====================== */
+function renderAnswer(q){
+  const z = document.getElementById("answerZone");
+  const rs = (q.questionBody.responseSpace||[{type:"lines",count:6}])[0];
+  let h = `<h3>✍️ Ta réponse</h3>`;
+  if(rs.type==="lines"){
+    h += `<textarea id="ans" placeholder="Écris ta réponse en phrases complètes…"></textarea>`;
+  } else if(rs.type==="labeled-list"){
+    h += (rs.items||[]).map((it,i)=>`<div class="lbl-row"><span class="lname">${esc(it)}</span>
+      <input class="short" data-i="${i}" placeholder="?" autocomplete="off"></div>`).join("");
+  } else if(rs.type==="checkbox-table"){
+    h += `<table class="cbx"><thead><tr><th></th>`+rs.columns.map(c=>`<th>${esc(c)}</th>`).join("")+`</tr></thead><tbody>`+
+      rs.rows.map((r,ri)=>`<tr><td class="rh">${esc(r)}</td>`+
+        rs.columns.map((c,ci)=>`<td><input type="checkbox" data-r="${ri}" data-c="${ci}"></td>`).join("")+`</tr>`).join("")+
+      `</tbody></table>`;
+  } else if(rs.type==="before-after-axis"){
+    const items = baItems(q);
+    h += `<div class="hint" style="margin-bottom:8px">Pivot : <b>${esc(rs.pivot||"")}</b></div><div class="ba">`+
+      items.map((it,i)=>`<div class="item"><span class="iname">${esc(it)}</span>
+        <span class="toggle" data-i="${i}">
+          <button data-v="avant">${esc(rs.beforeLabel||"Avant")}</button>
+          <button data-v="apres">${esc(rs.afterLabel||"Après")}</button>
+        </span></div>`).join("")+`</div>`;
+  } else if(rs.type==="chrono-ordering"){
+    const opts = chronoOptions(q);
+    h += `<div class="chrono">`+(rs.items||[]).map((it,i)=>`<div class="slot">
+        <span class="rank">${esc(it)}</span>
+        <select data-i="${i}"><option value="">— choisir —</option>${opts.map(o=>`<option>${esc(o)}</option>`).join("")}</select>
+      </div>`).join("")+`</div>`;
+  } else {
+    h += `<textarea id="ans" placeholder="Ta réponse…"></textarea>`;
+  }
+  z.innerHTML = h;
+  // toggle behaviour for before-after
+  z.querySelectorAll(".toggle").forEach(t=>{
+    t.querySelectorAll("button").forEach(btn=>btn.onclick=()=>{
+      t.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===btn));
+    });
+  });
+}
+function baItems(q){ // documents to classify = union of corrige avant/apres, fallback to all docs
+  const c=(q.corrige||[]).find(x=>x.kind==="avant_apres");
+  if(c) return [...new Set([...(c.avant||[]),...(c.apres||[])])];
+  return (q.documents||[]).map((d,i)=>d.title||("Document "+(i+1)));
+}
+function chronoOptions(q){
+  const c=(q.corrige||[]).find(x=>x.kind==="lettres");
+  if(c&&c.valeurs) return [...c.valeurs].sort();
+  return (q.documents||[]).map((d,i)=>"Document "+(i+1));
+}
+
+/* ====================== FOOT (buttons) ====================== */
+function renderFoot(checked){
+  const f=document.getElementById("footZone");
+  if(!checked){
+    f.innerHTML = `<button class="btn btn-primary" id="checkBtn">Vérifier ma réponse</button>
+       <button class="btn btn-soft" id="skipBtn">Passer →</button>`;
+    document.getElementById("checkBtn").onclick=checkAnswer;
+    document.getElementById("skipBtn").onclick=()=>{ nextQuestion(); };
+  } else {
+    f.innerHTML = `<button class="btn btn-primary" id="nextBtn">Exercice suivant →</button>
+       <button class="btn btn-ghost" id="retryBtn">↺ Réessayer</button>
+       <button class="btn btn-soft" id="homeBtn">Changer de sujet</button>`;
+    document.getElementById("nextBtn").onclick=()=>{ nextQuestion(); };
+    document.getElementById("retryBtn").onclick=()=>{ renderQuestion(current); };
+    document.getElementById("homeBtn").onclick=showHome;
+  }
+}
+
+/* ====================== CHECK ANSWER ====================== */
+function norm(s){return (s||"").toString().toLowerCase()
+  .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+  .replace(/document|doc|n°|n\.|n |[.\s]/g,"").trim();}
+
+function checkAnswer(){
+  const q=current;
+  const kind=(q.corrige&&q.corrige[0]&&q.corrige[0].kind)||"texte";
+  if(kind==="texte"){ checkOpen(q); }
+  else { checkClosed(q,kind); }
+}
+
+function checkClosed(q,kind){
+  const fz=document.getElementById("feedbackZone");
+  const c=q.corrige[0];
+  let rows=[], allOk=true;
+  if(kind==="lettres"){
+    const inputs=[...document.querySelectorAll("#answerZone .short, #answerZone select")];
+    c.valeurs.forEach((v,i)=>{
+      const got=inputs[i]?inputs[i].value:"";
+      const ok=norm(got)===norm(v) && norm(got)!=="";
+      allOk=allOk&&ok;
+      const label = inputs[i] && inputs[i].closest(".lbl-row") ? inputs[i].closest(".lbl-row").querySelector(".lname").textContent
+                   : (inputs[i] && inputs[i].closest(".slot") ? inputs[i].closest(".slot").querySelector(".rank").textContent : ("Élément "+(i+1)));
+      rows.push({ok, txt:`${esc(label)} → tu as répondu «&nbsp;${esc(got||"—")}&nbsp;», réponse attendue «&nbsp;${esc(v)}&nbsp;».`});
+    });
+  } else if(kind==="cases"){
+    c.lignes.forEach((lg,ri)=>{
+      lg.cochees.forEach((cell,ci)=>{
+        const box=document.querySelector(`#answerZone input[data-r="${ri}"][data-c="${ci}"]`);
+        const got=box?box.checked:false;
+        const ok=got===!!cell.coche; allOk=allOk&&ok;
+      });
+    });
+    rows.push({ok:allOk, txt: allOk?"Toutes les cases sont bien placées.":"Certaines cases ne correspondent pas encore au corrigé. Regarde la réponse modèle plus bas."});
+  } else if(kind==="avant_apres"){
+    const items=baItems(q);
+    items.forEach((it,i)=>{
+      const onbtn=document.querySelector(`#answerZone .toggle[data-i="${i}"] button.on`);
+      const got=onbtn?onbtn.dataset.v:"";
+      const expected=(c.avant||[]).map(norm).includes(norm(it))?"avant":"apres";
+      const ok=got===expected; allOk=allOk&&ok;
+      rows.push({ok, txt:`${esc(it)} → ${ok?"bien situé":"à revoir"}.`});
+    });
+  }
+  const cls=allOk?"good":"work";
+  const icon=allOk?"✓":"!";
+  const title=allOk?"Bravo, c'est juste&nbsp;!":"Presque&nbsp;! Regarde ceci";
+  let html=`<div class="fb ${cls}"><h3><span class="ic">${icon}</span>${title}</h3>`;
+  rows.forEach(r=> html+=`<div class="line"><span class="mk ${r.ok?'ok':'no'}">${r.ok?"✓":"✗"}</span><span>${r.txt}</span></div>`);
+  html+=`</div>`;
+  html+=modelHtml(q);
+  fz.innerHTML=html; renderFoot(true);
+  fz.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+/* ---------- OPEN (qualitative AI feedback) ---------- */
+function studentText(){ const t=document.getElementById("ans"); return t?t.value.trim():""; }
+async function checkOpen(q){
+  const fz=document.getElementById("feedbackZone");
+  const ans=studentText();
+  if(ans.length<3){
+    fz.innerHTML=`<div class="fb work"><h3><span class="ic">!</span>Écris d'abord ta réponse</h3><p>Essaie de formuler au moins une phrase complète, puis clique sur «&nbsp;Vérifier&nbsp;».</p></div>`;
+    return;
+  }
+  fz.innerHTML=`<div class="fb ai"><h3><span class="ic">✦</span>Analyse de ta réponse</h3><p><span class="spin"></span> &nbsp;Je lis attentivement ce que tu as écrit…</p></div>`;
+  renderFoot(true);
+  try{
+    const fb = await aiFeedback(q,ans);
+    let html=`<div class="fb ai"><h3><span class="ic">✦</span>Ta rétroaction</h3>`;
+    if(fb.points_forts) html+=`<div class="line"><span class="mk ok">✓</span><span><b>Ce qui est bien :</b> ${esc(fb.points_forts)}</span></div>`;
+    if(fb.a_ameliorer) html+=`<div class="line"><span class="mk no">→</span><span><b>Pour aller plus loin :</b> ${esc(fb.a_ameliorer)}</span></div>`;
+    if(fb.indice) html+=`<div class="blk"><b>💡 Indice :</b> ${esc(fb.indice)}</div>`;
+    if(fb.encouragement) html+=`<p style="margin-top:12px">${esc(fb.encouragement)}</p>`;
+    html+=`</div>`+modelHtml(q,true);
+    fz.innerHTML=html; renderFoot(true);
+    wireModelReveal();
+  }catch(e){
+    fz.innerHTML=`<div class="fb work"><h3><span class="ic">!</span>Rétroaction automatique indisponible</h3>
+      <p>L'analyse intelligente n'a pas pu se faire ici. Compare ta réponse avec la réponse modèle ci-dessous&nbsp;:</p></div>`+modelHtml(q);
+    renderFoot(true);
+  }
+  fz.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+async function aiFeedback(q,ans){
+  const docs=(q.documents||[]).map((d,i)=>`Document ${i+1}${d.title?" ("+d.title+")":""}: ${d.text||"[image]"}`).join("\n");
+  const regle=(q.reglettes||[]).map(r=>(r.rows||[]).map(x=>`${x.precise||""} ${x.condition||""} → ${x.points}`).join(" | ")).join("\n");
+  const modele=(q.corrige||[]).map(c=>c.valeur||"").join(" ");
+  const prompt =
+`Tu es un enseignant d'histoire bienveillant qui aide un élève québécois de 12 à 14 ans (1re ou 2e secondaire).
+Opération intellectuelle visée : « ${q.operation} ».
+Consigne donnée à l'élève : « ${q.questionBody.prompt} »
+${q.questionBody.bullets?("Éléments attendus : "+q.questionBody.bullets.join(" ; ")):""}
+
+Documents fournis à l'élève :
+${docs}
+
+Réponse modèle (NE PAS la révéler à l'élève) : « ${modele} »
+Critères d'évaluation : ${regle}
+
+Réponse de l'élève : « ${ans} »
+
+Donne une RÉTROACTION QUALITATIVE, encourageante, qui tutoie l'élève. Pas de note, pas de pointage chiffré.
+- Sois concret et adapté à son âge (phrases simples).
+- Souligne d'abord un point fort réel de SA réponse.
+- Indique UNE chose précise à améliorer ou à ajouter, sans donner directement la réponse modèle (laisse-le réessayer).
+- Donne un indice utile (pas la réponse).
+- Termine par un court encouragement.
+Réponds UNIQUEMENT avec un objet JSON valide, sans texte autour, sans balises Markdown, de la forme :
+{"points_forts":"...","a_ameliorer":"...","indice":"...","encouragement":"..."}`;
+  const payload = {max_tokens:600, messages:[{role:"user",content:prompt}]};
+  let data;
+  if(RELAY_URL){
+    // Production : le relais sécurisé ajoute la clé API et impose le modèle.
+    const res = await fetch(RELAY_URL,{
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(payload)
+    });
+    if(!res.ok) throw new Error("relay "+res.status);
+    data = await res.json();
+  } else {
+    // Démonstration dans l'aperçu Claude.ai (appel direct sans clé).
+    // Sur un site déployé, laisse RELAY_URL vide => on bascule sur la réponse modèle.
+    const res = await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({model:"claude-sonnet-4-20250514", ...payload})
+    });
+    data = await res.json();
+  }
+  let txt=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+  txt=txt.replace(/```json|```/g,"").trim();
+  const s=txt.indexOf("{"), e=txt.lastIndexOf("}");
+  return JSON.parse(txt.slice(s,e+1));
+}
+
+/* ---------- model answer reveal ---------- */
+function modelHtml(q,hidden=false){
+  let inner="";
+  const c=q.corrige&&q.corrige[0];
+  if(!c) return "";
+  if(c.kind==="texte") inner=esc(c.valeur||"");
+  else if(c.kind==="lettres") inner=(c.valeurs||[]).join(" · ");
+  else if(c.kind==="avant_apres") inner=`Avant : ${(c.avant||[]).join(", ")||"—"} | Après : ${(c.apres||[]).join(", ")||"—"}`;
+  else if(c.kind==="cases") inner="Voir la disposition correcte des cases dans le tableau.";
+  if(hidden){
+    return `<div style="margin-top:14px"><button class="btn btn-ghost" id="revealBtn">Voir une réponse modèle</button>
+      <div class="model hidden" id="modelBox"><div class="mlab">Réponse modèle</div>${inner}</div></div>`;
+  }
+  return `<div class="model"><div class="mlab">Réponse modèle</div>${inner}</div>`;
+}
+function wireModelReveal(){
+  const b=document.getElementById("revealBtn");
+  if(b) b.onclick=()=>{ document.getElementById("modelBox").classList.remove("hidden"); b.style.display="none"; };
+}
+
+/* ====================== UTIL ====================== */
+function esc(s){return (s==null?"":String(s)).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[m]));}
+
+loadData();
+</script>
+</body>
+</html>
