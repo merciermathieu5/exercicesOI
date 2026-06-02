@@ -1,98 +1,49 @@
-# Héberger « Je m'exerce » sur GitHub Pages
+# Mettre en ligne « Je m'exerce » (interface élève seule)
 
-Tu as **deux options**. Commence par l'Option A (5 minutes, gratuit, aucun compte
-supplémentaire). Passe à l'Option B seulement quand tu veux la rétroaction
-intelligente sur les réponses rédigées.
+Ce dossier ne contient **que** l'interface élève. L'outil enseignant a été retiré.
+La page d'accueil du site est directement la plateforme d'exercices.
 
----
+## Structure
 
-## Option A — Site statique (sans rétroaction IA)
-
-Les questions fermées (cases, avant/après, ordre, document-cause) sont corrigées
-automatiquement. Les questions rédigées affichent directement la **réponse modèle**
-pour que l'élève se compare. Tout fonctionne hors-ligne, sans clé, sans coût.
-
-1. Dans ton dépôt GitHub, dépose **`exercice.html` à la racine**, à côté du dossier
-   `assets/` (celui qui contient déjà `assets/data/questions.json` et `assets/img/`).
-   La structure doit ressembler à :
-
-   ```
-   ton-depot/
-   ├── index.html          ← l'outil enseignant (composition de cahiers) existant
-   ├── exercice.html       ← NOUVEAU : l'interface élève
-   └── assets/
-       ├── data/questions.json
-       └── img/...
-   ```
-
-2. `Settings` → `Pages` → branche `main` / dossier `(root)` → `Save`.
-3. Patiente ~1 minute, puis ouvre :
-   `https://TON-PSEUDO.github.io/TON-DEPOT/exercice.html`
-
-C'est tout. L'interface charge automatiquement les 354 questions et les images.
-
-> **Poids du site** : ~176 Mo (surtout les images). C'est bien en dessous des
-> limites de GitHub Pages (≈1 Go) pour un usage de classe. Aucune action requise.
-
----
-
-## Option B — Avec rétroaction IA sur les réponses rédigées
-
-GitHub Pages est un **hébergement statique** : il ne peut ni stocker ta clé API
-en secret, ni exécuter de code serveur. Il faut donc un petit **relais** gratuit
-qui détient la clé et parle à l'API Claude. C'est le fichier `worker.js`.
-
-### 1. Obtenir une clé API
-- Crée un compte sur https://console.anthropic.com et génère une clé `sk-ant-...`.
-- L'API est payante à l'usage, mais une courte rétroaction avec **Haiku 4.5**
-  coûte une fraction de cent par réponse. Mets une **limite de dépense mensuelle**
-  dans la console (ex. 5 $) pour dormir tranquille.
-
-### 2. Déployer le relais (Cloudflare Workers, gratuit)
-Suis les étapes indiquées **en commentaire en haut de `worker.js`**. En résumé :
-
-```bash
-npm install -g wrangler
-wrangler login
-wrangler init hec-relais          # choisir "Hello World", JavaScript
-# remplace src/index.js par worker.js
-wrangler secret put ANTHROPIC_API_KEY   # colle ta clé sk-ant-...
-wrangler deploy
+```
+HEC-eleve/
+├── index.html              ← l'interface élève (page d'accueil)
+├── .nojekyll
+└── assets/
+    ├── data/questions.json ← les 354 questions
+    └── img/...             ← les images des documents
 ```
 
-Tu obtiens une URL du type `https://hec-relais.TON-COMPTE.workers.dev`.
+## Déploiement sur GitHub Pages
 
-- Dans `worker.js`, mets ton vrai domaine dans `ALLOWED`
-  (ex. `"https://TON-PSEUDO.github.io"`, **sans** le `/TON-DEPOT`).
-- Le relais **impose le modèle et un plafond de jetons** : même si quelqu'un
-  trouve l'URL, il ne peut pas détourner ta clé pour autre chose.
+1. Dézippe ce dossier.
+2. Sur GitHub, dans ton dépôt : **Add file → Upload files**, puis glisse **le
+   contenu** du dossier `HEC-eleve/` (le fichier `index.html`, le dossier
+   `assets/` et `.nojekyll`) — pas le dossier `HEC-eleve` lui-même. Commit.
+3. `Settings` → `Pages` → branche `main` / dossier `(root)` → `Save`.
+4. Après ~1 minute, l'adresse racine de ton site affiche l'interface élève :
+   `https://TON-PSEUDO.github.io/TON-DEPOT/`
 
-### 3. Brancher l'interface
-Ouvre `exercice.html`, trouve la ligne tout en haut du script :
+C'est tout. Aucun réglage, aucune clé. Tout fonctionne hors-ligne.
+
+## Ce que fait la plateforme (Option A)
+
+- **Questions fermées** (cases à cocher, avant/après, ordre chronologique,
+  document-cause/conséquence) : **corrigées automatiquement**, avec un retour qui
+  indique ce qui est juste et ce qui est à revoir.
+- **Questions rédigées** : la plateforme affiche la **réponse modèle** pour que
+  l'élève se compare. (L'analyse intelligente de la rédaction n'est PAS active en
+  Option A.)
+
+## Activer plus tard l'analyse des réponses rédigées (Option B)
+
+Si tu veux que la plateforme **analyse** les réponses rédigées et donne une
+rétroaction personnalisée, il faut un petit relais gratuit (fichier `worker.js`,
+fourni séparément). Une fois le relais déployé, ouvre `index.html` et remplace, en
+haut du script :
 
 ```js
 const RELAY_URL = "";
 ```
 
-et remplace par ton URL de relais :
-
-```js
-const RELAY_URL = "https://hec-relais.TON-COMPTE.workers.dev";
-```
-
-Recommit le fichier. Désormais, chaque réponse rédigée reçoit une rétroaction
-qualitative bienveillante (point fort, point à améliorer, indice, encouragement),
-sans note chiffrée. Si le relais est indisponible, l'interface bascule
-automatiquement sur la réponse modèle.
-
----
-
-## Sécurité — à retenir
-- **Ne mets jamais ta clé `sk-ant-...` dans `exercice.html`** ni nulle part dans
-  le dépôt GitHub : tout y est public. La clé ne vit que dans le secret du relais.
-- Garde une limite de dépense mensuelle activée dans la console Anthropic.
-
-## Pour changer de modèle
-Dans `worker.js`, la constante `MODEL` :
-- `claude-haiku-4-5-20251001` — rapide, économique (recommandé pour la classe).
-- `claude-sonnet-4-6` — rétroaction plus fine, un peu plus coûteuse.
+par l'adresse de ton relais. Rien d'autre à changer.
