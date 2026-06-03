@@ -8,9 +8,12 @@ La page d'accueil du site est directement la plateforme d'exercices.
 ```
 HEC-eleve/
 ├── index.html              ← l'interface élève (page d'accueil)
+├── admin/
+│   └── index.html          ← la console d'administration (catalogue de questions)
 ├── .nojekyll
 └── assets/
     ├── data/questions.json ← les 354 questions
+    ├── js/data.js          ← métadonnées + banque de documents (utilisé par l'admin)
     └── img/...             ← les images des documents
 ```
 
@@ -25,6 +28,26 @@ HEC-eleve/
    `https://TON-PSEUDO.github.io/TON-DEPOT/`
 
 C'est tout. Aucun réglage, aucune clé. Tout fonctionne hors-ligne.
+
+## Console d'administration
+
+Une console est disponible à l'adresse `https://TON-PSEUDO.github.io/TON-DEPOT/admin/`.
+Elle reprend le même modèle que l'ancienne admin de l'outil enseignant : on y gère
+le **catalogue de questions** (identification, énoncé, espace de réponse, réglettes,
+documents, corrigé), avec sauvegarde directement dans le dépôt.
+
+- Aucun lien vers cette console n'apparaît sur la page élève : les élèves ne la
+  voient pas. On y accède en tapant l'adresse `/admin/`.
+- Pour modifier le catalogue, la console demande un **jeton GitHub** (jeton d'accès
+  personnel avec droit d'écriture sur le dépôt). Tu le saisis dans la console au
+  moment de te connecter ; il **n'est jamais stocké dans le dépôt** (au plus,
+  mémorisé dans ton navigateur si tu coches « se souvenir »).
+- Quand tu publies une modification, la console réécrit `assets/data/questions.json`,
+  et le site élève en tient compte automatiquement après 1–2 minutes.
+
+> **Sécurité** : la page `/admin/` est visible publiquement (c'est un site
+> statique), mais elle ne peut rien modifier sans un jeton GitHub valide ayant les
+> droits d'écriture. Sans jeton, c'est une coquille vide. Ne partage pas ton jeton.
 
 ## Ce que fait la plateforme (Option A)
 
