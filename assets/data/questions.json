@@ -26666,6 +26666,62 @@
           ]
         }
       ]
+    },
+    {
+      "id": "q-causes-consequences-2",
+      "operation": "Déterminer des causes et des conséquences",
+      "numero": 8,
+      "niveau": 2,
+      "realite_sociale_id": "reconnaissance-libertes-droits-civils",
+      "questionBody": {
+        "prompt": "Détermine une cause de la faible représentation des Noirs en politique dans la première moitié du 20e siècle.",
+        "responseSpace": [
+          {
+            "type": "lines",
+            "count": 3
+          }
+        ]
+      },
+      "reglettes": [
+        {
+          "type": "simple",
+          "id": "r-q-causes-consequences-2-1",
+          "label": "Réglette (2 points)",
+          "opLabel": "Déterminer des causes et des conséquences",
+          "maxPoints": 2,
+          "levels": [
+            {
+              "points": "2 points",
+              "condition": "L'élève détermine correctement la cause."
+            },
+            {
+              "points": "1 point",
+              "condition": "L'élève détermine plus ou moins correctement la cause."
+            },
+            {
+              "points": "0 point",
+              "condition": "L'élève détermine incorrectement la cause ou ne la détermine pas."
+            }
+          ]
+        }
+      ],
+      "documents": [
+        {
+          "id": "d-q-causes-consequences-2-1",
+          "title": "Document 1 : Le droit de vote des Noirs",
+          "layout": "text-only",
+          "text": "Entre 1876 et 1964, les municipalités et les États du Sud mettent en œuvre une série de règlements visant à limiter le droit de vote des Noirs. Par exemple, la clause du « grand-père » limite le droit de vote à ceux dont les aïeuls figurent déjà sur les listes électorales, ce qui excluait la plupart des anciens esclaves du Sud. De plus, ils imposent des frais d’inscription électorale très élevés, qui empêchent les Noirs et les Blancs les plus pauvres de se présenter aux urnes. Enfin, ils instituent des tests de connaissances obligatoires pour limiter l’inscription aux listes électorales et exclure les Noirs peu instruits. Jusque dans la moitié des années 1960, le nombre d’élus noirs demeure infime.",
+          "sources": [
+            "Source du texte : Service national du RÉCIT, domaine de l’univers social."
+          ]
+        }
+      ],
+      "corrige": [
+        {
+          "kind": "texte",
+          "valeur": "Le droit de votes des Noirs est limité par de nombreuses mesures : limitation du droit de vote à ceux dont les aïeuls figurent déjà sur les listes électorales, frais d’inscription électorale très élevés, tests de connaissances obligatoires, etc."
+        }
+      ]
     }
   ]
 }
