@@ -26507,6 +26507,165 @@
           "valeur": "Une conséquence du mouvement pour les droits civiques aux États-Unis est la fin de la ségrégation raciale dans l'exercice du droit de vote OU le Civil Rights Act qui met fin aux discriminations basées sur la race, la couleur, la religion ou le sexe."
         }
       ]
+    },
+    {
+      "id": "q-relation-6",
+      "operation": "Mettre en relation des faits",
+      "numero": 7,
+      "niveau": 2,
+      "realite_sociale_id": "reconnaissance-libertes-droits-civils",
+      "questionBody": {
+        "prompt": "Associe le nom du militant du mouvement pour les droits civiques aux États-Unis à l'image correspondante.",
+        "responseSpace": [
+          {
+            "type": "checkbox-table",
+            "columns": [
+              "Martin Luther King Jr.",
+              "Rosa Parks",
+              "Claudette Colvin",
+              "Malcom X"
+            ],
+            "rows": [
+              "Document 1",
+              "Document 2",
+              "Document 3",
+              "Document 4"
+            ]
+          }
+        ]
+      },
+      "reglettes": [
+        {
+          "type": "simple",
+          "id": "r-q-relation-6-1",
+          "label": "Réglette (2 points)",
+          "opLabel": "Mettre en relation des faits",
+          "maxPoints": 2,
+          "levels": [
+            {
+              "points": "2 points",
+              "condition": "L'élève met en relation les faits. (4 sur 4)"
+            },
+            {
+              "points": "1 point",
+              "condition": "L'élève met en relation certains faits. (2 ou 3 sur 4)"
+            },
+            {
+              "points": "0 point",
+              "condition": "L'élève ne met pas en relation le fait. (0 ou 1 sur 4)"
+            }
+          ]
+        }
+      ],
+      "documents": [
+        {
+          "id": "d-q-relation-6-1",
+          "title": "Document 1",
+          "layout": "image-only",
+          "imageUrl": "assets/img/relation-6/Malcolm_X_NYWTS_2a.jpg",
+          "sources": [
+            "Source de l'image : Ed Ford, World Telegram staff photographer, [...] NYWTS 2a, Wikimedia Commons. Licence : image du domaine public."
+          ]
+        },
+        {
+          "id": "d-q-relation-6-2",
+          "title": "Document 2",
+          "layout": "image-only",
+          "imageUrl": "assets/img/relation-6/2026-06-05 11_13_43-.png",
+          "sources": [
+            "Source de l'image : United Press Photo, [...] assise à l’avant de l’autobus, regardant par la fenêtre (21 décembre 1956), Library of Congress, LC-USZ62-111235. Licence : image du domaine public."
+          ]
+        },
+        {
+          "id": "d-q-relation-6-3",
+          "title": "Document 3",
+          "layout": "image-only",
+          "imageUrl": "assets/img/relation-6/Claudette_Colvin.jpg",
+          "sources": [
+            "Source de l'image : The Visibility Project, [...], Wikimedia Commons. Licence : image du domaine public."
+          ]
+        },
+        {
+          "id": "d-q-relation-6-4",
+          "title": "Document 4",
+          "layout": "image-only",
+          "imageUrl": "assets/img/relation-6/Martin_Luther_King,_Jr.jpg",
+          "sources": [
+            "Source de l'image : Bernie Faingold, [...], Wikimedia Commons. Licence : image du domaine public."
+          ]
+        }
+      ],
+      "corrige": [
+        {
+          "kind": "cases",
+          "lignes": [
+            {
+              "cochees": [
+                {
+                  "coche": false
+                },
+                {
+                  "coche": false
+                },
+                {
+                  "coche": false
+                },
+                {
+                  "coche": true
+                }
+              ]
+            },
+            {
+              "cochees": [
+                {
+                  "coche": false
+                },
+                {
+                  "coche": true
+                },
+                {
+                  "coche": false
+                },
+                {
+                  "coche": false
+                }
+              ]
+            },
+            {
+              "cochees": [
+                {
+                  "coche": false
+                },
+                {
+                  "coche": false
+                },
+                {
+                  "coche": true
+                },
+                {
+                  "coche": false
+                }
+              ]
+            },
+            {
+              "cochees": [
+                {
+                  "coche": true
+                },
+                {
+                  "coche": false
+                },
+                {
+                  "coche": false
+                },
+                {
+                  "coche": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
