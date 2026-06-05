@@ -396,6 +396,14 @@
   const $$ = (s,root)=> Array.from((root||document).querySelectorAll(s));
   const DATA = window.DATA || { realites_sociales:[], operations_intellectuelles:[], questions:[] };
 
+  // Listes de travail : on part des métadonnées de data.js, mais on les complète
+  // avec ce qui se trouve réellement dans le catalogue chargé (questions.json).
+  // Ainsi, même si data.js est en retard (p. ex. une réalité ajoutée seulement
+  // dans questions.json), toutes les réalités/opérations restent filtrables et
+  // éditables, et la réalité d'une question est toujours conservée à la sauvegarde.
+  let REALITES = (DATA.realites_sociales||[]).slice();
+  let OPERATIONS = (DATA.operations_intellectuelles||[]).slice();
+
   const store = { sha:null, file:{questions:[]}, currentIndex:-1, mode:'new' };
   let presets = [];
   let presetBySig = {};
@@ -463,17 +471,43 @@
     items.forEach(it=>{const o=document.createElement('option'); o.value=opt.value?opt.value(it):it; o.textContent=opt.label?opt.label(it):it; sel.appendChild(o);});}
   // réalités triées par niveau (Sec 1 puis Sec 2), en gardant l'ordre du programme, regroupées par année
   function fillRealiteSelect(sel, blank){
-    const list=DATA.realites_sociales.map((r,idx)=>({r,idx})).sort((a,b)=>((a.r.niveau||0)-(b.r.niveau||0))||(a.idx-b.idx));
+    const prev=sel.value;
+    const list=REALITES.map((r,idx)=>({r,idx})).sort((a,b)=>((a.r.niveau||0)-(b.r.niveau||0))||(a.idx-b.idx));
     const byLvl={}; list.forEach(o=>{(byLvl[o.r.niveau||0]=byLvl[o.r.niveau||0]||[]).push(o.r);});
     let html=blank?'<option value="">'+esc(blank)+'</option>':'';
     Object.keys(byLvl).sort((a,b)=>a-b).forEach(lvl=>{ html+='<optgroup label="Secondaire '+esc(lvl)+'">';
       byLvl[lvl].forEach(r=>{ html+='<option value="'+esc(r.id)+'">'+esc(r.titre||r.id)+'</option>'; }); html+='</optgroup>'; });
     sel.innerHTML=html;
+    if(prev) sel.value=prev;
   }
-  fillSelect($('#qop'), DATA.operations_intellectuelles);
-  fillRealiteSelect($('#qrealite'));
-  fillSelect($('#fOp'), DATA.operations_intellectuelles, {blank:'Toutes'});
-  fillRealiteSelect($('#fRealite'), 'Toutes');
+  function fillAllSelects(){
+    const op1=$('#qop').value, op2=$('#fOp').value;
+    fillSelect($('#qop'), OPERATIONS);
+    fillSelect($('#fOp'), OPERATIONS, {blank:'Toutes'});
+    if(op1) $('#qop').value=op1;
+    if(op2) $('#fOp').value=op2;
+    fillRealiteSelect($('#qrealite'));
+    fillRealiteSelect($('#fRealite'), 'Toutes');
+  }
+  fillAllSelects();
+
+  // Complète REALITES/OPERATIONS avec tout ce qui apparaît dans le catalogue chargé,
+  // puis reconstruit les menus. À appeler après chaque chargement depuis GitHub.
+  function syncMetaWithCatalog(){
+    const qs=(store.file&&store.file.questions)||[];
+    const knownReal=new Set(REALITES.map(r=>r.id));
+    const knownOp=new Set(OPERATIONS);
+    qs.forEach(q=>{
+      const rid=q.realite_sociale_id;
+      if(rid && !knownReal.has(rid)){
+        knownReal.add(rid);
+        REALITES.push({ id:rid, titre:rid, niveau:(+q.niveau||2) });
+      }
+      const op=q.operation;
+      if(op && !knownOp.has(op)){ knownOp.add(op); OPERATIONS.push(op); }
+    });
+    fillAllSelects();
+  }
 
   (function buildPresets(){
     const seen=new Map();
@@ -577,6 +611,7 @@
     setStatus('idle','Connexion…');
     try{
       const r=await ghLoad(); store.sha=r.sha; store.file=r.data; store.currentIndex=-1;
+      syncMetaWithCatalog(); resetDocPicker();
       try{ const tkey='hec_admin_token::'+c.repo;
         if($('#remember').checked){ localStorage.setItem(tkey,c.token); localStorage.setItem('hec_admin_repo',c.repo); }
         else { localStorage.removeItem(tkey); } }catch(e){}
@@ -816,15 +851,19 @@
   $$('[data-layout]').forEach(b=> b.onclick=()=>addDocCard({layout:b.getAttribute('data-layout')}) );
 
   // ----- Sélecteur « Piger un document existant » (copie indépendante) -----
+  let resetDocPicker = ()=>{};
   (function(){
     const ov=$('#docPicker'); if(!ov) return;
     const listEl=$('#dpList'), searchEl=$('#dpSearch'), realiteEl=$('#dpRealite'), countEl=$('#dpCount');
-    const realiteTitre={}; (DATA.realites_sociales||[]).forEach(r=>{ realiteTitre[r.id]=r.titre||r.id; });
     let docIndex=null, typeFilter='all';
+    resetDocPicker = ()=>{ docIndex=null; };
 
     function buildIndex(){
+      // Source : le catalogue réellement chargé (questions.json), qui contient
+      // toutes les réalités — y compris celles absentes de data.js.
+      const realiteTitre={}; REALITES.forEach(r=>{ realiteTitre[r.id]=r.titre||r.id; });
       const out=[];
-      (DATA.questions||[]).forEach(q=>{
+      ((store.file&&store.file.questions)||[]).forEach(q=>{
         (q.documents||[]).forEach(d=>{
           if(!d) return;
           const hasTxt=!!(d.text&&String(d.text).trim());
@@ -841,7 +880,7 @@
     function fillRealiteFilter(){
       const ids=new Set(docIndex.map(e=>e.realiteId).filter(Boolean));
       let html='<option value="">Toutes les r&eacute;alit&eacute;s sociales</option>';
-      (DATA.realites_sociales||[]).filter(r=>ids.has(r.id)).forEach(r=>{
+      REALITES.filter(r=>ids.has(r.id)).forEach(r=>{
         html+='<option value="'+esc(r.id)+'">'+esc(r.titre||r.id)+'</option>'; });
       realiteEl.innerHTML=html;
     }

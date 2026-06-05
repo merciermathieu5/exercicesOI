@@ -12,7 +12,7 @@ HEC-eleve/
 │   └── index.html          ← la console d'administration (catalogue de questions)
 ├── .nojekyll
 └── assets/
-    ├── data/questions.json ← les 354 questions
+    ├── data/questions.json ← les 363 questions
     ├── js/data.js          ← métadonnées + banque de documents (utilisé par l'admin)
     └── img/...             ← les images des documents
 ```

@@ -340,7 +340,7 @@ function buildHome(){
       sel.realite=null; sel.op=null; refreshHome(); };
   });
   document.getElementById("startBtn").onclick=()=>startSession();
-  document.getElementById("randomBtn").onclick=()=>{ sel.realite=null; sel.op=null; startSession(true); };
+  document.getElementById("randomBtn").onclick=()=>startSession();
   document.getElementById("backBtn").onclick=()=>showHome();
   refreshHome();
 }
@@ -362,9 +362,13 @@ function refreshHome(){
 }
 
 /* ====================== SESSION ====================== */
-function startSession(randomAny=false){
-  pool = QUESTIONS.filter(q=>levelOk(q) &&
-      (randomAny || ((!sel.realite||q.realite_sociale_id===sel.realite) && (!sel.op||q.operation===sel.op))));
+function startSession(){
+  // Respecte les filtres actifs (niveau, réalité, opération). Si aucun filtre de
+  // réalité/opération n'est choisi (cas du bouton « Au hasard »), on pige dans
+  // toutes les questions du niveau sélectionné.
+  pool = QUESTIONS.filter(q=>levelOk(q)
+      && (!sel.realite||q.realite_sociale_id===sel.realite)
+      && (!sel.op||q.operation===sel.op));
   if(!pool.length) return;
   nextQuestion();
   showEx();
