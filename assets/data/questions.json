@@ -26331,6 +26331,58 @@
           "valeur": "Parmi les actions réalisées, il y a des manifestations pacifiques comme les sit-in, les marches et le boycott de différents produits ou services."
         }
       ]
+    },
+    {
+      "id": "q-faits-8",
+      "operation": "Établir des faits",
+      "numero": 4,
+      "niveau": 2,
+      "realite_sociale_id": "reconnaissance-libertes-droits-civils",
+      "questionBody": {
+        "prompt": "Comment se nomme l'action de désobéissance civile présentée dans le document 1 ?",
+        "responseSpace": [
+          {
+            "type": "lines",
+            "count": 1
+          }
+        ]
+      },
+      "reglettes": [
+        {
+          "type": "simple",
+          "id": "r-q-faits-8-1",
+          "label": "Réglette (1 point)",
+          "opLabel": "Établir des faits",
+          "maxPoints": 1,
+          "levels": [
+            {
+              "points": "1 point",
+              "condition": "L'élève établit correctement le fait."
+            },
+            {
+              "points": "0 point",
+              "condition": "L'élève établit incorrectement le fait ou ne l'établit pas."
+            }
+          ]
+        }
+      ],
+      "documents": [
+        {
+          "id": "d-q-faits-8-1",
+          "title": "Document 1",
+          "layout": "image-only",
+          "imageUrl": "assets/img/faits-8/Greensboro_sit-in_lunch_counter.jpg",
+          "sources": [
+            "Source de l’image : RadioFan, Lunch counter from the F. W. Woolworth, Wikimedia Commons. Licence : Creative Commons BY-SA 3.0."
+          ]
+        }
+      ],
+      "corrige": [
+        {
+          "kind": "texte",
+          "valeur": "L'action de désobéissance civile est un sit-in."
+        }
+      ]
     }
   ]
 }
