@@ -26383,6 +26383,72 @@
           "valeur": "L'action de désobéissance civile est un sit-in."
         }
       ]
+    },
+    {
+      "id": "q-differences-similitudes-2",
+      "operation": "Dégager des différences et des similitudes",
+      "numero": 5,
+      "niveau": 2,
+      "realite_sociale_id": "reconnaissance-libertes-droits-civils",
+      "questionBody": {
+        "prompt": "Dégage une similitude dans les actions posées par les militants pour les droits civiques aux États-Unis.",
+        "responseSpace": [
+          {
+            "type": "lines",
+            "count": 3
+          }
+        ]
+      },
+      "reglettes": [
+        {
+          "type": "simple",
+          "id": "r-q-differences-similitudes-2-1",
+          "label": "Réglette (2 points)",
+          "opLabel": "Dégager des différences et des similitudes",
+          "maxPoints": 2,
+          "levels": [
+            {
+              "points": "2 points",
+              "condition": "L'élève dégage correctement la similitude."
+            },
+            {
+              "points": "1 point",
+              "condition": "L'élève dégage partiellement la similitude."
+            },
+            {
+              "points": "0 point",
+              "condition": "L'élève dégage incorrectement la similitude."
+            }
+          ]
+        }
+      ],
+      "documents": [
+        {
+          "id": "d-q-differences-similitudes-2-1",
+          "title": "Document 1 : Sit-in",
+          "layout": "text-image",
+          "text": "« Autre objet de lutte : les pratiques ségrégationnistes dans les restaurants. Dans un restaurant pour les Blancs ou dans une section du restaurant réservée aux Blancs, les pacifistes noirs s’assoient et attendent que quelqu’un vienne prendre leur commande. Invariablement, le propriétaire appelle la police, qui les déloge et les expulse. Puis, ils reviennent au même restaurant, toujours plus nombreux, attendre d’être servis. La vague de sit-in commence le premier février 1960, à Greensboro, en Caroline du Nord, lorsque quatre étudiants noirs refusent de quitter le comptoir de lunch d’un magasin Woolworth réservé aux Blancs. En septembre 1961, plus de 70 000 étudiants, noirs et blancs, auront participé à un ou plusieurs sit-in. »",
+          "imageUrl": "assets/img/differences-similitudes-2/day2.png",
+          "sources": [
+            "Source de l'image : Jack Moebes / Greensboro-News Record, Le sit-in de Greensboro (1960), UNC School of Education. Licence : Creative Commons (BY-NC-SA)."
+          ]
+        },
+        {
+          "id": "d-q-differences-similitudes-2-2",
+          "title": "Document 2 : Rosa Parks",
+          "layout": "image-only",
+          "imageUrl": "assets/img/differences-similitudes-2/2026-06-05 11_13_43-.png",
+          "sources": [
+            "Source de l'image : United Press Photo, Rosa Parks assise à l’avant de l’autobus, regardant par la fenêtre (21 décembre 1956), Library of Congress, LC-USZ62-111235. Licence : image du domaine public."
+          ]
+        }
+      ],
+      "corrige": [
+        {
+          "kind": "texte",
+          "valeur": "La similitude dans les actions posées par les militants des droits civiques est qu'il s'agit d'actions non violentes OU que les actions sont de la désobéissance civile."
+        }
+      ]
     }
   ]
 }
