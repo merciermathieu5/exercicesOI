@@ -117,10 +117,10 @@ h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:600;line-height:1.15;l
 .doc .dh{font-family:'Fraunces',serif;font-weight:600;font-size:15px;color:var(--ink);
   padding:10px 14px;border-bottom:1px solid var(--border);background:#efe8d6}
 .doc .db{padding:14px}
-.doc .db.row{display:flex;gap:14px;align-items:flex-start}
+.doc .db.stack{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
 .doc img{display:block;max-width:100%;border-radius:8px;border:1px solid var(--border)}
-.doc .di{flex:none;border-radius:8px}
-.doc .dtext{font-size:16px;line-height:1.55}
+.doc .di{max-width:100%;border-radius:8px}
+.doc .dtext{font-size:16px;line-height:1.55;min-width:0;white-space:pre-wrap;align-self:stretch}
 .src{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.4;font-style:italic}
 .noimg{padding:18px;text-align:center;color:var(--muted);font-size:14px;background:repeating-linear-gradient(45deg,#f0ebdd,#f0ebdd 10px,#ece6d6 10px,#ece6d6 20px);border-radius:8px}
 
@@ -419,7 +419,7 @@ function renderDoc(d){
   const hasImg = !!d.imageUrl;
   const widthCss = d.imageWidthCm ? `style="width:${Math.min(d.imageWidthCm*38,330)}px"` : "";
   if(hasImg && d.text){
-    body = `<div class="db row">
+    body = `<div class="db stack">
         ${img?`<img class="di" ${widthCss} src="${img}" alt="">`:`<div class="di noimg" ${widthCss?widthCss:'style="width:150px"'}>🖼️ image</div>`}
         <div class="dtext">${esc(d.text)}</div></div>`;
   } else if(hasImg){
