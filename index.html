@@ -205,6 +205,12 @@ textarea:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 4px var(--a
 .lbl-row input.short{width:110px;font:inherit;font-size:17px;text-align:center;padding:10px;
   border:1.5px solid var(--border-strong);border-radius:10px;background:#fff}
 .lbl-row input.short:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-bg)}
+.lbl-row select.lsel{flex:0 0 auto;min-width:230px;max-width:62%;font:inherit;font-size:16px;padding:10px 12px;
+  border:1.5px solid var(--border-strong);border-radius:10px;background:#fff;color:var(--ink)}
+.lbl-row select.lsel:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-bg)}
+.ll-block{margin:14px 0}
+.ll-block .lname{display:block;font-family:'Fraunces',serif;font-weight:600;font-size:16px;margin-bottom:6px;color:var(--accent)}
+.ll-block textarea.lblta{min-height:96px}
 
 table.cbx{border-collapse:collapse;width:100%;margin-top:6px}
 table.cbx th,table.cbx td{border:1px solid var(--border);padding:11px 12px;text-align:center}
@@ -690,17 +696,32 @@ function renderAnswer(q){
   const rs = (q.questionBody.responseSpace||[{type:"lines",count:6}])[0];
   let h = `<h3>✍️ Ta réponse</h3>`;
   if(rs.type==="lines"){
-    h += `<textarea id="ans" placeholder="Écris ta réponse en phrases complètes…"></textarea>`;
+    const n = Math.max(1, rs.count||6);
+    const hh = Math.max(72, Math.min(40*n+48, 360));
+    const ph = n<=1 ? "Réponds en un mot ou un groupe de mots…"
+             : n<=2 ? "Écris ta réponse en une ou deux phrases complètes…"
+             : "Écris ta réponse en phrases complètes…";
+    h += `<textarea id="ans" style="min-height:${hh}px" placeholder="${ph}"></textarea>`;
+  } else if(rs.type==="labeled-lines"){
+    const hh = Math.max(72, Math.min(34*(rs.count||3)+44, 240));
+    h += (rs.items||[]).map((it,i)=>`<div class="ll-block"><span class="lname">${esc(it)}</span>
+      <textarea class="lblta" data-i="${i}" data-label="${esc(it)}" style="min-height:${hh}px" placeholder="Écris ta réponse en phrases complètes…"></textarea></div>`).join("");
   } else if(rs.type==="labeled-list"){
-    h += (rs.items||[]).map((it,i)=>`<div class="lbl-row"><span class="lname">${esc(it)}</span>
-      <input class="short" data-i="${i}" placeholder="?" autocomplete="off"></div>`).join("");
+    if(rs.options && rs.options.length){
+      const opts = rs.options.map(o=>`<option>${esc(o)}</option>`).join("");
+      h += (rs.items||[]).map((it,i)=>`<div class="lbl-row"><span class="lname">${esc(it)}</span>
+        <select class="lsel" data-i="${i}"><option value="">— choisir —</option>${opts}</select></div>`).join("");
+    } else {
+      h += (rs.items||[]).map((it,i)=>`<div class="lbl-row"><span class="lname">${esc(it)}</span>
+        <input class="short" data-i="${i}" placeholder="?" autocomplete="off"></div>`).join("");
+    }
   } else if(rs.type==="checkbox-table"){
     h += `<table class="cbx"><thead><tr><th></th>`+rs.columns.map(c=>`<th>${esc(c)}</th>`).join("")+`</tr></thead><tbody>`+
       rs.rows.map((r,ri)=>`<tr><td class="rh">${esc(r)}</td>`+
         rs.columns.map((c,ci)=>`<td><input type="checkbox" data-r="${ri}" data-c="${ci}"></td>`).join("")+`</tr>`).join("")+
       `</tbody></table>`;
   } else if(rs.type==="before-after-axis"){
-    const items = baItems(q);
+    const items = shuffle(baItems(q));
     h += `<div class="hint" style="margin-bottom:8px">Pivot : <b>${esc(rs.pivot||"")}</b></div><div class="ba">`+
       items.map((it,i)=>`<div class="item"><span class="iname">${esc(it)}</span>
         <span class="toggle" data-i="${i}">
@@ -790,9 +811,10 @@ function checkClosed(q,kind){
     });
     rows.push({ok:allOk, txt: allOk?"Toutes les cases sont bien placées.":"Certaines cases ne correspondent pas encore au corrigé. Regarde la réponse modèle plus bas."});
   } else if(kind==="avant_apres"){
-    const items=baItems(q);
-    items.forEach((it,i)=>{
-      const onbtn=document.querySelector(`#answerZone .toggle[data-i="${i}"] button.on`);
+    const blocks=[...document.querySelectorAll("#answerZone .ba .item")];
+    blocks.forEach(bl=>{
+      const it=bl.querySelector(".iname").textContent;
+      const onbtn=bl.querySelector(".toggle button.on");
       const got=onbtn?onbtn.dataset.v:"";
       const expected=(c.avant||[]).map(norm).includes(norm(it))?"avant":"apres";
       const ok=got===expected; allOk=allOk&&ok;
@@ -812,11 +834,21 @@ function checkClosed(q,kind){
 }
 
 /* ---------- OPEN (qualitative AI feedback) ---------- */
-function studentText(){ const t=document.getElementById("ans"); return t?t.value.trim():""; }
+function studentText(){
+  const t=document.getElementById("ans");
+  if(t) return t.value.trim();
+  const tas=[...document.querySelectorAll("#answerZone textarea.lblta")];
+  return tas.map(x=>`${x.dataset.label} : ${x.value.trim()||"—"}`).join("\n");
+}
+function studentRaw(){
+  const t=document.getElementById("ans");
+  if(t) return t.value.trim();
+  return [...document.querySelectorAll("#answerZone textarea.lblta")].map(x=>x.value.trim()).join("");
+}
 async function checkOpen(q){
   const fz=document.getElementById("feedbackZone");
   const ans=studentText();
-  if(ans.length<3){
+  if(studentRaw().length<3){
     fz.innerHTML=`<div class="fb work"><h3><span class="ic">!</span>Écris d'abord ta réponse</h3><p>Essaie de formuler au moins une phrase complète, puis clique sur «&nbsp;Vérifier&nbsp;».</p></div>`;
     return;
   }

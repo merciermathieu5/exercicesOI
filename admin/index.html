@@ -285,6 +285,7 @@
           <select id="rsType">
             <option value="lines">Lignes de r&eacute;ponse</option>
             <option value="labeled-list">Liste &agrave; libell&eacute;s (lettres)</option>
+            <option value="labeled-lines">Champs de r&eacute;daction &agrave; libell&eacute;s (phrases)</option>
             <option value="chrono-ordering">Mise en ordre chronologique</option>
             <option value="before-after-axis">Axe avant / apr&egrave;s</option>
             <option value="checkbox-table">Tableau &agrave; cocher</option>
@@ -676,11 +677,18 @@
     if(t==='lines'){
       box.innerHTML='<label class="fld" style="max-width:240px"><span class="lab">Nombre de lignes</span><input type="number" id="rsCount" min="1" step="1" value="'+((state&&state.count)||4)+'"></label>';
       $('#rsCount').oninput=refreshPreview;
-    } else if(t==='labeled-list'||t==='chrono-ordering'){
-      const lab=t==='chrono-ordering'?'Cases (du plus ancien au plus r\u00e9cent)':'Libell\u00e9s (un par r\u00e9ponse attendue)';
-      box.innerHTML='<label class="fld"><span class="lab">'+lab+'</span></label><div id="rsItems"></div><button class="btn-add" id="addRsItem" type="button">&#65291; Ajouter</button>';
-      stringListEditor($('#rsItems'), state&&state.items, t==='chrono-ordering'?'ex. 1er (le plus ancien)':'ex. Le royaume de France');
+    } else if(t==='labeled-list'||t==='labeled-lines'||t==='chrono-ordering'){
+      const lab=t==='chrono-ordering'?'Cases (du plus ancien au plus r\u00e9cent)':t==='labeled-lines'?'Libell\u00e9s (un champ de r\u00e9daction par libell\u00e9)':'Libell\u00e9s (un par r\u00e9ponse attendue)';
+      box.innerHTML='<label class="fld"><span class="lab">'+lab+'</span></label><div id="rsItems"></div><button class="btn-add" id="addRsItem" type="button">&#65291; Ajouter</button>'
+        +(t==='labeled-list'?'<label class="fld" style="margin-top:12px"><span class="lab">Choix propos\u00e9s (optionnel &mdash; affiche un menu d\u00e9roulant au lieu d\'un champ libre)</span></label><div id="rsOptions"></div><button class="btn-add" id="addRsOpt" type="button">&#65291; Choix</button>':'')
+        +(t==='labeled-lines'?'<label class="fld" style="max-width:240px;margin-top:12px"><span class="lab">Hauteur (lignes par champ)</span><input type="number" id="rsCount" min="1" step="1" value="'+((state&&state.count)||3)+'"></label>':'');
+      stringListEditor($('#rsItems'), state&&state.items, t==='chrono-ordering'?'ex. 1er (le plus ancien)':t==='labeled-lines'?'ex. Cause politique':'ex. Le royaume de France');
       $('#addRsItem').onclick=()=>addStringRow($('#rsItems'),'','');
+      if(t==='labeled-list'){
+        stringListEditor($('#rsOptions'), state&&state.options, 'ex. Renaissance artistique');
+        $('#addRsOpt').onclick=()=>addStringRow($('#rsOptions'),'','');
+      }
+      if(t==='labeled-lines'){ $('#rsCount').oninput=refreshPreview; }
     } else if(t==='before-after-axis'){
       box.innerHTML='<div class="row c3">'+
         '<label class="fld"><span class="lab">Libell\u00e9 « avant »</span><input type="text" id="rsBefore" value="'+esc((state&&state.beforeLabel)||'Ant\u00e9riorit\u00e9 (Avant)')+'"></label>'+
@@ -701,7 +709,14 @@
   function readResponseSpace(){
     const t=$('#rsType').value;
     if(t==='lines') return {type:t, count:parseInt($('#rsCount').value,10)||1};
-    if(t==='labeled-list'||t==='chrono-ordering') return {type:t, items:readStringList($('#rsItems'))};
+    if(t==='labeled-list'){
+      const o={type:t, items:readStringList($('#rsItems'))};
+      const opts=readStringList($('#rsOptions'));
+      if(opts.length) o.options=opts;
+      return o;
+    }
+    if(t==='labeled-lines') return {type:t, items:readStringList($('#rsItems')), count:parseInt($('#rsCount').value,10)||3};
+    if(t==='chrono-ordering') return {type:t, items:readStringList($('#rsItems'))};
     if(t==='before-after-axis') return {type:t, beforeLabel:$('#rsBefore').value, afterLabel:$('#rsAfter').value, pivot:$('#rsPivot').value};
     if(t==='checkbox-table') return {type:t, columns:readStringList($('#rsCols')), rows:readStringList($('#rsRows'))};
     return {type:t};
@@ -710,7 +725,7 @@
   // ===================== Corrigé =====================
   $('#corType').onchange=()=>{renderCorFields(); refreshPreview();};
   function suggestCorType(){
-    const map={'lines':'texte','labeled-list':'lettres','chrono-ordering':'lettres','before-after-axis':'avant_apres','checkbox-table':'cases'};
+    const map={'lines':'texte','labeled-list':'lettres','labeled-lines':'texte','chrono-ordering':'lettres','before-after-axis':'avant_apres','checkbox-table':'cases'};
     const want=map[$('#rsType').value]; if(want){ $('#corType').value=want; renderCorFields(); }
   }
   function renderCorFields(state){

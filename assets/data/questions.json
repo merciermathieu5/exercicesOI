@@ -493,6 +493,11 @@
               "Document 1 →",
               "Document 2 →",
               "Document 3 →"
+            ],
+            "options": [
+              "Renaissance architecturale",
+              "Renaissance artistique",
+              "Renaissance scientifique"
             ]
           }
         ]
@@ -7971,11 +7976,12 @@
         "instructions": [],
         "responseSpace": [
           {
-            "type": "labeled-list",
+            "type": "labeled-lines",
             "items": [
               "Changement",
               "Continuité"
-            ]
+            ],
+            "count": 3
           }
         ]
       },
@@ -8024,11 +8030,8 @@
       ],
       "corrige": [
         {
-          "kind": "lettres",
-          "valeurs": [
-            "Les êtres humains du Néolithique commencent à produire leur nourriture grâce à l'élevage et à l'agriculture.",
-            "Les êtres humains du Néolithique continuent de pêcher, de chasser et de cueillir afin de subvenir à leurs besoins."
-          ]
+          "kind": "texte",
+          "valeur": "Changement : Les êtres humains du Néolithique commencent à produire leur nourriture grâce à l'élevage et à l'agriculture. — Continuité : Les êtres humains du Néolithique continuent de pêcher, de chasser et de cueillir afin de subvenir à leurs besoins."
         }
       ]
     },
@@ -11075,11 +11078,12 @@
         "instructions": [],
         "responseSpace": [
           {
-            "type": "labeled-list",
+            "type": "labeled-lines",
             "items": [
               "1re cause",
               "2e cause"
-            ]
+            ],
+            "count": 3
           }
         ]
       },
@@ -11122,11 +11126,8 @@
       ],
       "corrige": [
         {
-          "kind": "lettres",
-          "valeurs": [
-            "Le sceau permet d'authentifier des documents officiels.",
-            "Le sceau permet de garantir la validité des documents et des transactions commerciales."
-          ]
+          "kind": "texte",
+          "valeur": "1re cause : Le sceau permet d'authentifier des documents officiels. — 2e cause : Le sceau permet de garantir la validité des documents et des transactions commerciales."
         }
       ]
     },
@@ -12307,11 +12308,12 @@
         "instructions": [],
         "responseSpace": [
           {
-            "type": "labeled-list",
+            "type": "labeled-lines",
             "items": [
               "Différence",
               "Similitude"
-            ]
+            ],
+            "count": 3
           }
         ]
       },
@@ -12360,11 +12362,8 @@
       ],
       "corrige": [
         {
-          "kind": "lettres",
-          "valeurs": [
-            "Les scribes travaillent dans les temples, les écoles et les palais, alors que les esclaves effectuent des travaux agricoles.",
-            "Certains esclaves doués effectuent des tâches administratives comme celles des scribes."
-          ]
+          "kind": "texte",
+          "valeur": "Différence : Les scribes travaillent dans les temples, les écoles et les palais, alors que les esclaves effectuent des travaux agricoles. — Similitude : Certains esclaves doués effectuent des tâches administratives comme celles des scribes."
         }
       ]
     },
@@ -13938,11 +13937,12 @@
         "instructions": [],
         "responseSpace": [
           {
-            "type": "labeled-list",
+            "type": "labeled-lines",
             "items": [
               "Droit",
               "Devoir"
-            ]
+            ],
+            "count": 3
           }
         ]
       },
@@ -13982,11 +13982,8 @@
       ],
       "corrige": [
         {
-          "kind": "lettres",
-          "valeurs": [
-            "Faire du commerce dans la cité-État.",
-            "Payer les taxes et les impôts et faire son service militaire."
-          ]
+          "kind": "texte",
+          "valeur": "Droit : Faire du commerce dans la cité-État. — Devoir : Payer les taxes et les impôts et faire son service militaire."
         }
       ]
     },
@@ -14007,6 +14004,10 @@
               "Boulè",
               "Héliée",
               "Ecclésia"
+            ],
+            "options": [
+              "Pouvoir judiciaire",
+              "Pouvoir législatif"
             ]
           }
         ]
@@ -14783,11 +14784,12 @@
         "instructions": [],
         "responseSpace": [
           {
-            "type": "labeled-list",
+            "type": "labeled-lines",
             "items": [
               "Conséquence politique",
               "Conséquence économique"
-            ]
+            ],
+            "count": 3
           }
         ]
       },
@@ -14836,11 +14838,8 @@
       ],
       "corrige": [
         {
-          "kind": "lettres",
-          "valeurs": [
-            "Une conséquence politique de la Guerre du Péloponnèse sur la cité-État d'Athènes est sa perte d'influence et de pouvoir sur la Grèce, au profit de Sparte OU La perte de confiance des Athéniens dans la démocratie.",
-            "La Guerre du Péloponnèse contribue à la ruine de la cité-État d'Athènes."
-          ]
+          "kind": "texte",
+          "valeur": "Conséquence politique : Une conséquence politique de la Guerre du Péloponnèse sur la cité-État d'Athènes est sa perte d'influence et de pouvoir sur la Grèce, au profit de Sparte OU La perte de confiance des Athéniens dans la démocratie. — Conséquence économique : La Guerre du Péloponnèse contribue à la ruine de la cité-État d'Athènes."
         }
       ]
     },
@@ -15319,11 +15318,12 @@
         "instructions": [],
         "responseSpace": [
           {
-            "type": "labeled-list",
+            "type": "labeled-lines",
             "items": [
               "Cause de l'ostracisme",
               "Conséquence de l'ostracisme"
-            ]
+            ],
+            "count": 3
           }
         ]
       },
@@ -15373,11 +15373,8 @@
       ],
       "corrige": [
         {
-          "kind": "lettres",
-          "valeurs": [
-            "L'ostracisme est causé par le vote, 1 fois par année, des citoyens athéniens qui sont dangereux pour la démocratie.",
-            "La conséquence de l'ostracisme est l'exil pour une durée de 10 ans."
-          ]
+          "kind": "texte",
+          "valeur": "Cause de l'ostracisme : L'ostracisme est causé par le vote, 1 fois par année, des citoyens athéniens qui sont dangereux pour la démocratie. — Conséquence de l'ostracisme : La conséquence de l'ostracisme est l'exil pour une durée de 10 ans."
         }
       ]
     },
@@ -16408,11 +16405,12 @@
         "instructions": [],
         "responseSpace": [
           {
-            "type": "labeled-list",
+            "type": "labeled-lines",
             "items": [
               "Différence",
               "Similitude"
-            ]
+            ],
+            "count": 3
           }
         ]
       },
@@ -16461,11 +16459,8 @@
       ],
       "corrige": [
         {
-          "kind": "lettres",
-          "valeurs": [
-            "Les garçons sont élevés afin de participer à la vie politique romaine, alors que les jeunes filles sont éduquées afin de devenir de bonnes épouses romaines.",
-            "Les garçons et les filles reçoivent la même éducation jusqu'à l'âge de 7 ans, auprès de leur mère."
-          ]
+          "kind": "texte",
+          "valeur": "Différence : Les garçons sont élevés afin de participer à la vie politique romaine, alors que les jeunes filles sont éduquées afin de devenir de bonnes épouses romaines. — Similitude : Les garçons et les filles reçoivent la même éducation jusqu'à l'âge de 7 ans, auprès de leur mère."
         }
       ]
     },
@@ -17410,11 +17405,12 @@
         "instructions": [],
         "responseSpace": [
           {
-            "type": "labeled-list",
+            "type": "labeled-lines",
             "items": [
               "Cause politique",
               "Cause économique"
-            ]
+            ],
+            "count": 3
           }
         ]
       },
@@ -17457,11 +17453,8 @@
       ],
       "corrige": [
         {
-          "kind": "lettres",
-          "valeurs": [
-            "Les voies romaines permettent la diffusion des lois dans l'empire romain OU permettent le déplacement des soldats afin de protéger ou de conquérir des territoires.",
-            "Les voies romaines servaient au développement du commerce et au transport des marchandises."
-          ]
+          "kind": "texte",
+          "valeur": "Cause politique : Les voies romaines permettent la diffusion des lois dans l'empire romain OU permettent le déplacement des soldats afin de protéger ou de conquérir des territoires. — Cause économique : Les voies romaines servaient au développement du commerce et au transport des marchandises."
         }
       ]
     },
@@ -18129,11 +18122,12 @@
         "instructions": [],
         "responseSpace": [
           {
-            "type": "labeled-list",
+            "type": "labeled-lines",
             "items": [
               "Rôle économique",
               "Rôle politique"
-            ]
+            ],
+            "count": 3
           }
         ]
       },
@@ -18176,11 +18170,8 @@
       ],
       "corrige": [
         {
-          "kind": "lettres",
-          "valeurs": [
-            "Lever les impôts.",
-            "Commander les légions romaines OU Responsable de la défense OU Maintenir la paix OU Faire appliquer les lois."
-          ]
+          "kind": "texte",
+          "valeur": "Rôle économique : Lever les impôts. — Rôle politique : Commander les légions romaines OU Responsable de la défense OU Maintenir la paix OU Faire appliquer les lois."
         }
       ]
     },
@@ -20598,11 +20589,12 @@
         "instructions": [],
         "responseSpace": [
           {
-            "type": "labeled-list",
+            "type": "labeled-lines",
             "items": [
               "Un devoir du vassal envers son suzerain",
               "Un devoir du suzerain envers son vassal"
-            ]
+            ],
+            "count": 3
           }
         ]
       },
@@ -20645,11 +20637,8 @@
       ],
       "corrige": [
         {
-          "kind": "lettres",
-          "valeurs": [
-            "Offrir conseil à son seigneur, jurer fidélité ou apporter une aide militaire.",
-            "Protection militaire ou octroi d'un fief."
-          ]
+          "kind": "texte",
+          "valeur": "Un devoir du vassal envers son suzerain : Offrir conseil à son seigneur, jurer fidélité ou apporter une aide militaire. — Un devoir du suzerain envers son vassal : Protection militaire ou octroi d'un fief."
         }
       ]
     },
