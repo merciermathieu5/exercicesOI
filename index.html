@@ -12,6 +12,8 @@
   --bg:#f4f0e6; --card:#fffdf8; --alt:#fbf7ee;
   --border:#ddd6c6; --border-strong:#c3bba6;
   --ink:#2a2620; --muted:#6e685c;
+  --ink-band:#26221c; --ink-band-soft:#3a352c;
+  --on-ink:#f3efe6; --on-ink-muted:#c9c2b2;
   --burgundy:#8b3a2e; --burgundy-d:#6e2c22;
   --gold:#c89b3c; --green:#4a7c4f; --danger:#b15543;
   --accent:#8b3a2e; --accent-bg:#f5e8d8;
@@ -34,20 +36,42 @@ body{
 .wrap{max-width:860px;margin:0 auto;padding:28px 20px 80px}
 h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:600;line-height:1.15;letter-spacing:-.01em;margin:0}
 
-/* ---------- Top bar ---------- */
-.topbar{display:flex;align-items:center;gap:14px;margin-bottom:6px}
-.admin-link{margin-left:auto;align-self:flex-start;text-decoration:none;font-size:13px;font-weight:700;
-  color:var(--muted);background:var(--alt);border:1px solid var(--border);border-radius:999px;
-  padding:7px 14px;transition:.15s;white-space:nowrap}
-.admin-link:hover{color:var(--burgundy);border-color:var(--burgundy);background:#fff}
-.crest{width:46px;height:46px;flex:none;border-radius:12px;
-  background:linear-gradient(145deg,var(--burgundy),var(--burgundy-d));
-  display:grid;place-items:center;color:#f7ecd9;box-shadow:var(--shadow);
-  font-family:'Fraunces',serif;font-weight:700;font-size:22px}
-.topbar .t1{font-family:'Fraunces',serif;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-.topbar .t2{font-family:'Fraunces',serif;font-size:22px;font-weight:600}
-.rule{height:2px;border:0;margin:14px 0 26px;
-  background:linear-gradient(90deg,var(--burgundy) 0%, var(--gold) 22%, transparent 60%)}
+/* ---------- Bandeau encré (identité HEC) ---------- */
+.site-header{background:linear-gradient(180deg,var(--ink-band-soft) 0%,var(--ink-band) 100%);
+  padding:.7rem 1.25rem;color:var(--on-ink)}
+.header-inner{display:flex;align-items:center;gap:.85rem;flex-wrap:wrap;max-width:1100px;margin:0 auto}
+.site-title{font-family:'Fraunces',Georgia,serif;font-size:1.3rem;font-weight:700;margin:0;line-height:1.3;color:var(--on-ink)}
+.site-title .title-sub{font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-weight:500;font-size:.72em;
+  color:var(--on-ink-muted);letter-spacing:.01em}
+@media(max-width:700px){.site-title{font-size:1.02rem}}
+.admin-link{margin-left:auto;display:inline-flex;align-items:center;gap:.4rem;font-size:13px;font-weight:600;
+  text-decoration:none;color:var(--on-ink);background:rgba(255,255,255,.06);
+  border:1px solid rgba(243,239,230,.35);padding:.38rem .75rem;border-radius:99px;white-space:nowrap;transition:.15s}
+.admin-link:hover{background:rgba(255,255,255,.14);border-color:var(--on-ink);color:#fff}
+
+/* ---------- Frise des réalités sociales (sélecteur signature, grille 6 × 2) ----------
+   Rangée 1 = Secondaire 1, rangée 2 = Secondaire 2 (ordre chronologique).
+   Libellés complets (PFEQ). Cliquer filtre la pige ; re-cliquer retire le filtre. */
+.periodes-rail{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:1fr;
+  background:var(--ink-band);padding:0 max(1.25rem,calc((100% - 1100px)/2)) .7rem;gap:4px}
+.rail-seg{min-width:0;appearance:none;border:none;cursor:pointer;background:var(--seg-color,#888);
+  color:rgba(255,255,255,.95);font-family:inherit;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:1px;padding:.5rem .4rem .55rem;border-radius:7px;position:relative;
+  transition:filter .15s,transform .15s,opacity .15s}
+.rail-name{font-family:'Fraunces',Georgia,serif;font-size:.8rem;font-weight:700;line-height:1.15;text-align:center}
+.rail-sub{font-size:.62rem;font-weight:600;letter-spacing:.03em;opacity:.85;white-space:nowrap}
+.rail-seg:hover{filter:brightness(1.16);transform:translateY(-1px)}
+.periodes-rail.has-active .rail-seg:not(.active){opacity:.45}
+.periodes-rail.has-active .rail-seg:not(.active):hover{opacity:.85}
+.rail-seg.active{filter:brightness(1.1);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.rail-seg.active::after{content:"";position:absolute;left:22%;right:22%;bottom:4px;height:3px;
+  border-radius:99px;background:rgba(255,255,255,.92)}
+.rail-seg:disabled{opacity:.28;cursor:not-allowed;filter:grayscale(.4)}
+.rail-seg:disabled:hover{transform:none;filter:grayscale(.4)}
+.rail-seg.lvl-dim{opacity:.32}
+.rail-seg:focus-visible{outline:2px solid #fff;outline-offset:-3px}
+@media(max-width:920px){.periodes-rail{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:560px){.periodes-rail{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 /* ---------- Home ---------- */
 .lead{font-size:21px;color:var(--ink);margin:0 0 4px}
@@ -61,17 +85,6 @@ h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:600;line-height:1.15;l
 .seg button{border:0;background:transparent;font:inherit;font-size:15px;color:var(--muted);
   padding:7px 16px;border-radius:999px;cursor:pointer;transition:.15s}
 .seg button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow);font-weight:700}
-
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:8px}
-@media(max-width:620px){.grid{grid-template-columns:1fr}}
-.tile{position:relative;text-align:left;border:1px solid var(--border);background:var(--card);
-  border-radius:14px;padding:16px 16px 16px 18px;cursor:pointer;font:inherit;color:var(--ink);
-  transition:transform .14s, box-shadow .14s, border-color .14s; overflow:hidden}
-.tile::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--tcol,#bbb)}
-.tile:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--border-strong)}
-.tile .tname{font-family:'Fraunces',serif;font-size:18px;font-weight:600;line-height:1.2}
-.tile .tmeta{font-size:13px;color:var(--muted);margin-top:6px}
-.tile.sel{outline:3px solid var(--tcol);outline-offset:-1px}
 
 .chips{display:flex;flex-wrap:wrap;gap:9px}
 .chip{border:1px solid var(--border);background:var(--card);border-radius:999px;
@@ -184,23 +197,23 @@ table.cbx input{width:22px;height:22px;accent-color:var(--accent);cursor:pointer
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="topbar">
-    <div class="crest">H</div>
-    <div>
-      <div class="t1">Histoire et éducation à la citoyenneté</div>
-      <div class="t2">Je m'exerce</div>
-    </div>
-    <a class="admin-link" href="admin/" title="Console d'administration">⚙ Admin</a>
+<header class="site-header">
+  <div class="header-inner">
+    <h1 class="site-title">Histoire et éducation à la citoyenneté <span class="title-sub">Je m'exerce — opérations intellectuelles, premier cycle</span></h1>
+    <a class="admin-link" href="admin/" title="Console d'administration — réservée à l'enseignant">⚙ Admin</a>
   </div>
-  <hr class="rule">
+</header>
 
+<!-- FRISE DES RÉALITÉS SOCIALES : sélecteur principal (peuplée par le script) -->
+<nav id="realitesRail" class="periodes-rail" aria-label="Frise des réalités sociales — cliquer une réalité pour choisir ton sujet"></nav>
+
+<div class="wrap">
   <div id="dataBanner" class="banner hidden"></div>
 
   <!-- ============ HOME ============ -->
   <section id="screen-home" class="fade">
     <p class="lead"><span class="big">Sur quoi veux-tu t'exercer&nbsp;?</span></p>
-    <p class="sub">Choisis un sujet ou une opération intellectuelle. Tu réponds, et tu reçois une rétroaction pour t'améliorer.</p>
+    <p class="sub">Choisis une réalité sociale dans la frise ci-dessus, ou une opération intellectuelle ci-dessous. Tu réponds, et tu reçois une rétroaction pour t'améliorer.</p>
 
     <div class="section-label">Niveau</div>
     <div class="seg" id="levelSeg">
@@ -209,10 +222,7 @@ table.cbx input{width:22px;height:22px;accent-color:var(--accent);cursor:pointer
       <button data-lvl="2">Secondaire&nbsp;2</button>
     </div>
 
-    <div class="section-label">Un sujet (réalité sociale)</div>
-    <div class="grid" id="realiteGrid"></div>
-
-    <div class="section-label">Ou une opération intellectuelle</div>
+    <div class="section-label">Une opération intellectuelle</div>
     <div class="chips" id="opChips"></div>
 
     <div class="cta-row">
@@ -250,19 +260,23 @@ table.cbx input{width:22px;height:22px;accent-color:var(--accent);cursor:pointer
    ====================================================================== */
 const RELAY_URL = "";
 
-/* ====================== METADATA (stable) ====================== */
+/* ====================== METADATA (stable) ======================
+   Couleurs alignées sur l'interface enseignante (HEC-main style.css).
+   Ordre : Secondaire 1 puis Secondaire 2, chronologique — il détermine
+   les deux rangées de la frise (6 × 2). */
 const REALITES = [
   {id:"sedentarisation",titre:"La sédentarisation",niveau:1,c:"#a86a3d",bg:"#f0e2d4"},
   {id:"emergence-civilisation",titre:"L'émergence d'une civilisation",niveau:1,c:"#2c5a7a",bg:"#dde4ed"},
   {id:"premiere-experience-democratie",titre:"Une première expérience de démocratie",niveau:1,c:"#9a3a30",bg:"#ecdbd6"},
   {id:"romanisation",titre:"La romanisation",niveau:1,c:"#5e7868",bg:"#dfe6e1"},
   {id:"christianisation-occident",titre:"La christianisation de l'Occident",niveau:1,c:"#b08840",bg:"#f3ead4"},
+  {id:"essor-urbain-commercial",titre:"L'essor urbain et commercial",niveau:1,c:"#3d7a72",bg:"#ddeae7"},
   {id:"renouvellement-vision-homme",titre:"Le renouvellement de la vision de l'Homme",niveau:2,c:"#4a7c4f",bg:"#e8f0e3"},
   {id:"expansion-europeenne",titre:"L'expansion européenne dans le monde",niveau:2,c:"#a06642",bg:"#f5e8dc"},
   {id:"revolution-americaine",titre:"La Révolution américaine",niveau:2,c:"#6a4a8a",bg:"#ece4f0"},
   {id:"industrialisation",titre:"L'industrialisation",niveau:2,c:"#4a6a82",bg:"#dde6ee"},
   {id:"expansion-monde-industriel",titre:"L'expansion du monde industriel",niveau:2,c:"#7a3a4a",bg:"#ecdfe2"},
-  {id:"reconnaissance-libertes-droits-civils",titre:"La reconnaissance des libertés et des droits civils",niveau:2,c:"#586377",bg:"#e3e5ea"},
+  {id:"reconnaissance-libertes-droits-civils",titre:"La reconnaissance des libertés et des droits civils",niveau:2,c:"#c8951f",bg:"#f6edcf"},
 ];
 const REAL_BY_ID = Object.fromEntries(REALITES.map(r=>[r.id,r]));
 const OPERATIONS = [
@@ -311,20 +325,22 @@ function resolveImg(url){
 
 /* ====================== HOME ====================== */
 function buildHome(){
-  const grid = document.getElementById("realiteGrid");
-  grid.innerHTML = "";
+  const rail = document.getElementById("realitesRail");
+  rail.innerHTML = "";
   const counts = {};
   QUESTIONS.forEach(q=>counts[q.realite_sociale_id]=(counts[q.realite_sociale_id]||0)+1);
   REALITES.forEach(r=>{
-    if(!counts[r.id]) return;
-    const n = filteredCount({realite:r.id});
-    const el = document.createElement("button");
-    el.className="tile"; el.style.setProperty("--tcol",r.c);
-    el.innerHTML = `<div class="tname">${r.titre}</div>
-      <div class="tmeta">Secondaire ${r.niveau} · ${counts[r.id]} questions</div>`;
-    el.onclick=()=>{ sel.realite = (sel.realite===r.id)?null:r.id; if(sel.realite) sel.op=null; refreshHome(); };
-    el.dataset.id=r.id;
-    grid.appendChild(el);
+    const n = counts[r.id]||0;
+    const seg = document.createElement("button");
+    seg.type="button"; seg.className="rail-seg"; seg.dataset.id=r.id;
+    seg.style.setProperty("--seg-color", r.c);
+    seg.innerHTML = `<span class="rail-name">${r.titre}</span>
+      <span class="rail-sub">Secondaire ${r.niveau} · ${n ? n+" question"+(n>1?"s":"") : "à venir"}</span>`;
+    seg.title = `${r.titre} — Secondaire ${r.niveau}`;
+    seg.setAttribute("aria-label", `Choisir le sujet : ${r.titre} (Secondaire ${r.niveau})`);
+    if(!n){ seg.disabled = true; }
+    else seg.onclick=()=>{ sel.realite = (sel.realite===r.id)?null:r.id; if(sel.realite) sel.op=null; refreshHome(); };
+    rail.appendChild(seg);
   });
   const chips = document.getElementById("opChips");
   chips.innerHTML="";
@@ -350,15 +366,18 @@ function filteredCount(over={}){
   return QUESTIONS.filter(q=>levelOk(q) && (!rl||q.realite_sociale_id===rl) && (!sel.op||q.operation===sel.op)).length;
 }
 function refreshHome(){
-  document.querySelectorAll("#realiteGrid .tile").forEach(t=>{
-    t.classList.toggle("sel", t.dataset.id===sel.realite);
-    t.style.opacity = (sel.level==="all"||REAL_BY_ID[t.dataset.id].niveau===+sel.level)?"1":".4";
+  const rail = document.getElementById("realitesRail");
+  rail.classList.toggle("has-active", !!sel.realite);
+  rail.querySelectorAll(".rail-seg").forEach(s=>{
+    s.classList.toggle("active", s.dataset.id===sel.realite);
+    const lvlOk = sel.level==="all" || REAL_BY_ID[s.dataset.id].niveau===+sel.level;
+    s.classList.toggle("lvl-dim", !lvlOk && !s.disabled);
   });
   document.querySelectorAll("#opChips .chip").forEach(c=>c.classList.toggle("sel",c.dataset.op===sel.op));
   const n = filteredCount();
   const ready = !!(sel.realite||sel.op);
   document.getElementById("startBtn").disabled = !ready || n===0;
-  document.getElementById("poolHint").textContent = ready ? `${n} exercice${n>1?"s":""} disponible${n>1?"s":""}` : "Choisis un sujet ou une opération";
+  document.getElementById("poolHint").textContent = ready ? `${n} exercice${n>1?"s":""} disponible${n>1?"s":""}` : "Choisis une réalité sociale dans la frise ou une opération";
 }
 
 /* ====================== SESSION ====================== */
@@ -380,9 +399,11 @@ function nextQuestion(){
   renderQuestion(current);
 }
 function showHome(){ document.getElementById("screen-ex").classList.add("hidden");
+  document.getElementById("realitesRail").classList.remove("hidden");
   const h=document.getElementById("screen-home"); h.classList.remove("hidden"); h.classList.add("fade");
   window.scrollTo({top:0,behavior:"smooth"}); }
 function showEx(){ document.getElementById("screen-home").classList.add("hidden");
+  document.getElementById("realitesRail").classList.add("hidden");
   const e=document.getElementById("screen-ex"); e.classList.remove("hidden"); e.classList.add("fade");
   window.scrollTo({top:0,behavior:"smooth"}); }
 
@@ -391,7 +412,7 @@ function applyAccent(q){
   const r = REAL_BY_ID[q.realite_sociale_id] || {c:"#8b3a2e",bg:"#f5e8d8"};
   document.documentElement.style.setProperty("--accent",r.c);
   document.documentElement.style.setProperty("--accent-bg",r.bg);
-  document.getElementById("exReal").textContent = (r.titre||"") ;
+  document.getElementById("exReal").textContent = r.titre ? `${r.titre} · Secondaire ${r.niveau}` : "";
 }
 function renderQuestion(q){
   applyAccent(q);
