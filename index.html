@@ -56,7 +56,7 @@ h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:600;line-height:1.15;l
   background:var(--ink-band);padding:0 max(1.25rem,calc((100% - 1100px)/2)) .7rem;gap:4px}
 .rail-seg{min-width:0;appearance:none;border:none;cursor:pointer;background:var(--seg-color,#888);
   color:rgba(255,255,255,.95);font-family:inherit;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:1px;padding:.5rem .4rem .55rem;border-radius:7px;position:relative;
+  justify-content:center;gap:1px;padding:.5rem .4rem .8rem;border-radius:7px;position:relative;
   transition:filter .15s,transform .15s,opacity .15s}
 .rail-name{font-family:'Fraunces',Georgia,serif;font-size:.8rem;font-weight:700;line-height:1.15;text-align:center}
 .rail-sub{font-size:.62rem;font-weight:600;letter-spacing:.03em;opacity:.85;white-space:nowrap}
@@ -64,7 +64,7 @@ h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:600;line-height:1.15;l
 .periodes-rail.has-active .rail-seg:not(.active){opacity:.45}
 .periodes-rail.has-active .rail-seg:not(.active):hover{opacity:.85}
 .rail-seg.active{filter:brightness(1.1);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.35)}
-.rail-seg.active::after{content:"";position:absolute;left:22%;right:22%;bottom:4px;height:3px;
+.rail-seg.active::after{content:"";position:absolute;left:22%;right:22%;bottom:8px;height:3px;
   border-radius:99px;background:rgba(255,255,255,.92)}
 .rail-seg:disabled{opacity:.28;cursor:not-allowed;filter:grayscale(.4)}
 .rail-seg:disabled:hover{transform:none;filter:grayscale(.4)}
@@ -91,6 +91,62 @@ h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:600;line-height:1.15;l
   padding:9px 15px;font:inherit;font-size:15px;cursor:pointer;color:var(--ink);transition:.14s}
 .chip:hover{border-color:var(--burgundy);color:var(--burgundy)}
 .chip.sel{background:var(--burgundy);border-color:var(--burgundy);color:#fff;font-weight:700}
+.chip .cnt{display:inline-block;min-width:22px;text-align:center;font-size:12px;font-weight:700;
+  background:var(--alt);border:1px solid var(--border);border-radius:99px;padding:1px 6px;margin-left:6px;color:var(--muted)}
+.chip.sel .cnt{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.4);color:#fff}
+.chip.zero{opacity:.38}
+.chip.zero:not(.sel){pointer-events:none}
+
+/* barre de maîtrise au bas des segments de la frise */
+.rail-progress{position:absolute;left:8%;right:8%;bottom:2px;height:3px;border-radius:99px;
+  background:rgba(0,0,0,.28);overflow:hidden}
+.rail-progress-fill{display:block;height:100%;width:0;border-radius:99px;background:rgba(255,255,255,.92);transition:width .4s}
+.rail-seg.zero:not(.active){opacity:.35}
+
+/* Ma série */
+.serie-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 4px}
+.serie-lbl{font-size:14px;font-weight:700;color:var(--muted)}
+.check-pill{border:1.5px dashed var(--border-strong);background:var(--alt);border-radius:999px;
+  padding:9px 16px;font:inherit;font-size:15px;cursor:pointer;color:var(--muted);transition:.14s}
+.check-pill:hover{border-color:var(--gold);color:var(--ink)}
+.check-pill.on{background:#f6edcf;border:1.5px solid var(--gold);color:#7a5a14;font-weight:700}
+.check-pill.off{opacity:.45;pointer-events:none}
+.reset-link{border:0;background:none;font:inherit;font-size:13px;color:var(--muted);
+  text-decoration:underline;cursor:pointer;padding:6px}
+.reset-link:hover{color:var(--danger)}
+
+/* barre et compteur de série */
+.sess-count{font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap}
+.sess-bar{height:5px;border-radius:99px;background:var(--alt);border:1px solid var(--border);
+  overflow:hidden;margin:-8px 0 18px}
+.sess-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));
+  border-radius:99px;transition:width .45s}
+
+/* auto-évaluation (questions rédigées) */
+.self-eval{margin-top:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  background:var(--alt);border:1px dashed var(--border-strong);border-radius:12px;padding:12px 16px}
+.self-eval .se-q{font-size:15px;color:var(--muted);flex:1;min-width:220px}
+.se-btn{font:inherit;font-size:15px;font-weight:700;border-radius:999px;padding:8px 16px;cursor:pointer;transition:.14s}
+.se-btn.ok{border:1.5px solid var(--green);background:#eef5ec;color:var(--green)}
+.se-btn.ok:hover{background:var(--green);color:#fff}
+.se-btn.no{border:1.5px solid var(--gold);background:#fbf2e6;color:#8a6516}
+.se-btn.no:hover{background:var(--gold);color:#fff}
+.se-done{font-size:15px;color:var(--ink)}
+
+/* bilan de série */
+.recap{text-align:center;padding:8px 4px}
+.recap-title{font-size:26px;margin-bottom:18px}
+.recap-stats{display:flex;justify-content:center;gap:26px;margin-bottom:22px;flex-wrap:wrap}
+.recap .rs{display:flex;flex-direction:column;align-items:center;min-width:90px}
+.recap .rs-n{font-family:'Fraunces',Georgia,serif;font-size:40px;font-weight:700;line-height:1.1}
+.recap .rs-n.ok{color:var(--green)} .recap .rs-n.work{color:var(--gold)} .recap .rs-n.skip{color:var(--muted)}
+.recap .rs-l{font-size:14px;color:var(--muted)}
+.recap-list{text-align:left;max-width:560px;margin:0 auto;border-top:1px dashed var(--border);padding-top:12px}
+.recap-row{display:flex;align-items:baseline;gap:10px;padding:6px 0;border-bottom:1px dashed var(--border);font-size:15px}
+.recap-row:last-child{border-bottom:0}
+.recap-row .mk.skip{color:var(--muted);font-weight:700}
+.recap-row .rr-op{flex:1}
+.recap-row .rr-real{font-size:13px;font-weight:700;white-space:nowrap}
 
 .cta-row{margin-top:34px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 .btn{font:inherit;font-weight:700;border:0;border-radius:12px;padding:14px 26px;cursor:pointer;transition:.15s}
@@ -225,6 +281,26 @@ table.cbx input{width:22px;height:22px;accent-color:var(--accent);cursor:pointer
     <div class="section-label">Une opération intellectuelle</div>
     <div class="chips" id="opChips"></div>
 
+    <div class="section-label">Ma série</div>
+    <div class="serie-row">
+      <span class="serie-lbl">Longueur</span>
+      <div class="seg" id="serieSeg">
+        <button data-n="5">5</button>
+        <button data-n="10" class="on">10</button>
+        <button data-n="all">Toutes</button>
+      </div>
+      <span class="serie-lbl">Type d'exercices</span>
+      <div class="seg" id="typeSeg">
+        <button data-t="all" class="on">Tous</button>
+        <button data-t="auto">Corrigés automatiquement</button>
+        <button data-t="redaction">À rédiger</button>
+      </div>
+    </div>
+    <div class="serie-row">
+      <button class="check-pill" id="nonReussiesPill" type="button">★ Prioriser celles que je n'ai pas encore réussies</button>
+      <button class="reset-link hidden" id="resetProg" type="button">Effacer ma progression</button>
+    </div>
+
     <div class="cta-row">
       <button class="btn btn-primary" id="startBtn" disabled>Commencer&nbsp;→</button>
       <button class="btn btn-ghost" id="randomBtn">🎲 Au hasard</button>
@@ -236,8 +312,10 @@ table.cbx input{width:22px;height:22px;accent-color:var(--accent);cursor:pointer
   <section id="screen-ex" class="hidden">
     <div class="ex-top">
       <span class="badge"><span class="dot"></span><span id="exReal"></span></span>
+      <span class="sess-count" id="sessCount"></span>
       <button class="linkback" id="backBtn">← Changer de sujet</button>
     </div>
+    <div class="sess-bar"><span id="sessFill"></span></div>
     <div class="qcard" id="qcard"></div>
     <div class="answer" id="answerZone"></div>
     <div id="feedbackZone"></div>
@@ -290,8 +368,24 @@ const OPERATIONS = [
 let QUESTIONS = [];
 let IMGMAP = (window.HEC_IMGMAP||{});
 let usingSample = false;
-const sel = {level:"all", realite:null, op:null};
+/* Sélections multiples et combinables : réalités OU entre elles, opérations OU
+   entre elles, ET entre les deux dimensions. serie = longueur de la séance.
+   type = "all" | "auto" (corrigées automatiquement) | "redaction". */
+const sel = {level:"all", realites:new Set(), ops:new Set(), serie:10, type:"all", nonReussies:false};
 let pool = [], current = null;
+let session = {total:0, idx:0, results:[]};   // résultats de la série en cours
+
+/* ---------- progression persistante (cet appareil) ---------- */
+const PKEY = "hec-exercices-progres-v1";
+let PROG = {};
+try{ PROG = JSON.parse(localStorage.getItem(PKEY)||"{}"); }catch(e){ PROG = {}; }
+function saveProg(){ try{ localStorage.setItem(PKEY, JSON.stringify(PROG)); }catch(e){} }
+function markProg(qid, ok){
+  const p = PROG[qid] || {n:0, ok:false};
+  p.n += 1; p.ok = p.ok || !!ok;
+  PROG[qid] = p; saveProg();
+}
+function isOpen(q){ return ((q.corrige&&q.corrige[0]&&q.corrige[0].kind)||"texte")==="texte"; }
 
 /* ====================== DATA LOADING ====================== */
 async function loadData(){
@@ -323,80 +417,216 @@ function resolveImg(url){
   return url;                                    // deployed: real relative path
 }
 
+/* ====================== FILTRAGE ====================== */
+function levelOk(q){ return sel.level==="all" || String(q.niveau)===sel.level; }
+function typeOk(q){
+  if(sel.type==="all") return true;
+  return sel.type==="redaction" ? isOpen(q) : !isOpen(q);
+}
+/* Compte les questions correspondant aux filtres, avec surcharges possibles
+   (pour les compteurs vivants : « et si je cochais ceci ? »). */
+function matchCount(over={}){
+  const rs = over.realites!==undefined ? over.realites : sel.realites;
+  const ops = over.ops!==undefined ? over.ops : sel.ops;
+  return QUESTIONS.filter(q=> levelOk(q) && typeOk(q)
+    && (!rs.size || rs.has(q.realite_sociale_id))
+    && (!ops.size || ops.has(q.operation))).length;
+}
+function matching(){
+  return QUESTIONS.filter(q=> levelOk(q) && typeOk(q)
+    && (!sel.realites.size || sel.realites.has(q.realite_sociale_id))
+    && (!sel.ops.size || sel.ops.has(q.operation)));
+}
+
 /* ====================== HOME ====================== */
 function buildHome(){
   const rail = document.getElementById("realitesRail");
   rail.innerHTML = "";
-  const counts = {};
-  QUESTIONS.forEach(q=>counts[q.realite_sociale_id]=(counts[q.realite_sociale_id]||0)+1);
+  const totals = {};
+  QUESTIONS.forEach(q=>totals[q.realite_sociale_id]=(totals[q.realite_sociale_id]||0)+1);
   REALITES.forEach(r=>{
-    const n = counts[r.id]||0;
+    const total = totals[r.id]||0;
     const seg = document.createElement("button");
     seg.type="button"; seg.className="rail-seg"; seg.dataset.id=r.id;
     seg.style.setProperty("--seg-color", r.c);
     seg.innerHTML = `<span class="rail-name">${r.titre}</span>
-      <span class="rail-sub">Secondaire ${r.niveau} · ${n ? n+" question"+(n>1?"s":"") : "à venir"}</span>`;
+      <span class="rail-sub" data-sub="${r.id}">Secondaire ${r.niveau}</span>
+      <span class="rail-progress"><span class="rail-progress-fill" data-fill="${r.id}"></span></span>`;
     seg.title = `${r.titre} — Secondaire ${r.niveau}`;
     seg.setAttribute("aria-label", `Choisir le sujet : ${r.titre} (Secondaire ${r.niveau})`);
-    if(!n){ seg.disabled = true; }
-    else seg.onclick=()=>{ sel.realite = (sel.realite===r.id)?null:r.id; if(sel.realite) sel.op=null; refreshHome(); };
+    if(!total){ seg.disabled = true; seg.querySelector(".rail-sub").textContent = `Secondaire ${r.niveau} · à venir`; }
+    else seg.onclick=()=>{ sel.realites.has(r.id) ? sel.realites.delete(r.id) : sel.realites.add(r.id); refreshHome(); };
     rail.appendChild(seg);
   });
   const chips = document.getElementById("opChips");
   chips.innerHTML="";
   OPERATIONS.forEach(op=>{
     const el=document.createElement("button");
-    el.className="chip"; el.textContent=op; el.dataset.op=op;
-    el.onclick=()=>{ sel.op=(sel.op===op)?null:op; if(sel.op) sel.realite=null; refreshHome(); };
+    el.className="chip"; el.dataset.op=op;
+    el.innerHTML = `${esc(op)} <span class="cnt" data-cnt="${esc(op)}"></span>`;
+    el.onclick=()=>{ sel.ops.has(op) ? sel.ops.delete(op) : sel.ops.add(op); refreshHome(); };
     chips.appendChild(el);
   });
+  // Niveau : filtre doux — ne désélectionne que les réalités devenues hors niveau.
   document.querySelectorAll("#levelSeg button").forEach(b=>{
     b.onclick=()=>{ sel.level=b.dataset.lvl;
       document.querySelectorAll("#levelSeg button").forEach(x=>x.classList.toggle("on",x===b));
-      sel.realite=null; sel.op=null; refreshHome(); };
+      if(sel.level!=="all"){
+        [...sel.realites].forEach(id=>{ if(REAL_BY_ID[id].niveau!==+sel.level) sel.realites.delete(id); });
+      }
+      refreshHome(); };
   });
-  document.getElementById("startBtn").onclick=()=>startSession();
-  document.getElementById("randomBtn").onclick=()=>startSession();
+  // Ma série : longueur
+  document.querySelectorAll("#serieSeg button").forEach(b=>{
+    b.onclick=()=>{ sel.serie = b.dataset.n==="all" ? "all" : +b.dataset.n;
+      document.querySelectorAll("#serieSeg button").forEach(x=>x.classList.toggle("on",x===b));
+      refreshHome(); };
+  });
+  // Ma série : type d'exercices
+  document.querySelectorAll("#typeSeg button").forEach(b=>{
+    b.onclick=()=>{ sel.type=b.dataset.t;
+      document.querySelectorAll("#typeSeg button").forEach(x=>x.classList.toggle("on",x===b));
+      refreshHome(); };
+  });
+  // Ma série : prioriser les questions jamais réussies
+  const np = document.getElementById("nonReussiesPill");
+  np.onclick=()=>{ sel.nonReussies=!sel.nonReussies; np.classList.toggle("on",sel.nonReussies); refreshHome(); };
+  // Effacer la progression
+  document.getElementById("resetProg").onclick=()=>{
+    if(confirm("Effacer ta progression sur cet appareil ? Les barres de maîtrise repartiront à zéro.")){
+      PROG={}; saveProg(); refreshHome();
+    }
+  };
+  document.getElementById("startBtn").onclick=()=>startSession(false);
+  document.getElementById("randomBtn").onclick=()=>startSession(true);
   document.getElementById("backBtn").onclick=()=>showHome();
   refreshHome();
 }
-function levelOk(q){ return sel.level==="all" || String(q.niveau)===sel.level; }
-function filteredCount(over={}){
-  const rl=over.realite!==undefined?over.realite:sel.realite;
-  return QUESTIONS.filter(q=>levelOk(q) && (!rl||q.realite_sociale_id===rl) && (!sel.op||q.operation===sel.op)).length;
-}
 function refreshHome(){
   const rail = document.getElementById("realitesRail");
-  rail.classList.toggle("has-active", !!sel.realite);
+  rail.classList.toggle("has-active", sel.realites.size>0);
   rail.querySelectorAll(".rail-seg").forEach(s=>{
-    s.classList.toggle("active", s.dataset.id===sel.realite);
-    const lvlOk = sel.level==="all" || REAL_BY_ID[s.dataset.id].niveau===+sel.level;
+    const id = s.dataset.id, r = REAL_BY_ID[id];
+    s.classList.toggle("active", sel.realites.has(id));
+    const lvlOk = sel.level==="all" || r.niveau===+sel.level;
     s.classList.toggle("lvl-dim", !lvlOk && !s.disabled);
+    if(s.disabled) return;
+    // Compteur vivant : combien de questions de cette réalité avec les OI/type/niveau choisis
+    const n = QUESTIONS.filter(q=> q.realite_sociale_id===id && levelOk(q) && typeOk(q)
+      && (!sel.ops.size || sel.ops.has(q.operation))).length;
+    s.querySelector(`[data-sub="${id}"]`).textContent = `Secondaire ${r.niveau} · ${n} question${n>1?"s":""}`;
+    s.classList.toggle("zero", n===0);
+    // Barre de maîtrise : part des questions de la réalité déjà réussies
+    const all = QUESTIONS.filter(q=>q.realite_sociale_id===id);
+    const okN = all.filter(q=>PROG[q.id]&&PROG[q.id].ok).length;
+    s.querySelector(`[data-fill="${id}"]`).style.width = all.length ? (100*okN/all.length).toFixed(1)+"%" : "0";
   });
-  document.querySelectorAll("#opChips .chip").forEach(c=>c.classList.toggle("sel",c.dataset.op===sel.op));
-  const n = filteredCount();
-  const ready = !!(sel.realite||sel.op);
-  document.getElementById("startBtn").disabled = !ready || n===0;
-  document.getElementById("poolHint").textContent = ready ? `${n} exercice${n>1?"s":""} disponible${n>1?"s":""}` : "Choisis une réalité sociale dans la frise ou une opération";
+  // Chips OI : compteur vivant selon réalités/type/niveau choisis
+  document.querySelectorAll("#opChips .chip").forEach(c=>{
+    const op = c.dataset.op;
+    c.classList.toggle("sel", sel.ops.has(op));
+    const n = QUESTIONS.filter(q=> q.operation===op && levelOk(q) && typeOk(q)
+      && (!sel.realites.size || sel.realites.has(q.realite_sociale_id))).length;
+    c.querySelector(".cnt").textContent = n;
+    c.classList.toggle("zero", n===0);
+  });
+  // Pilule « jamais réussies » : indisponible tant qu'aucune progression
+  const np = document.getElementById("nonReussiesPill");
+  const hasProg = Object.keys(PROG).length>0;
+  np.classList.toggle("off", !hasProg);
+  if(!hasProg){ sel.nonReussies=false; np.classList.remove("on"); }
+  document.getElementById("resetProg").classList.toggle("hidden", !hasProg);
+  // Compte total et bouton
+  const n = matching().length;
+  const serieN = sel.serie==="all" ? n : Math.min(sel.serie, n);
+  document.getElementById("startBtn").disabled = n===0;
+  document.getElementById("startBtn").innerHTML = n===0 ? "Commencer&nbsp;→"
+    : `Commencer (${serieN}&nbsp;exercice${serieN>1?"s":""})&nbsp;→`;
+  const filters = sel.realites.size||sel.ops.size||sel.type!=="all"||sel.level!=="all";
+  document.getElementById("poolHint").textContent =
+    n===0 ? "Aucun exercice ne correspond à ces choix — élargis tes filtres."
+    : filters ? `${n} exercice${n>1?"s":""} dans ta sélection`
+    : "Compose ta séance, ou lance-toi au hasard";
 }
 
 /* ====================== SESSION ====================== */
-function startSession(){
-  // Respecte les filtres actifs (niveau, réalité, opération). Si aucun filtre de
-  // réalité/opération n'est choisi (cas du bouton « Au hasard »), on pige dans
-  // toutes les questions du niveau sélectionné.
-  pool = QUESTIONS.filter(q=>levelOk(q)
-      && (!sel.realite||q.realite_sociale_id===sel.realite)
-      && (!sel.op||q.operation===sel.op));
-  if(!pool.length) return;
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function startSession(auHasard){
+  // « Au hasard » = mode surprise : ignore les réalités et opérations choisies,
+  // mais respecte le niveau et le type d'exercices.
+  let base = auHasard ? QUESTIONS.filter(q=>levelOk(q)&&typeOk(q)) : matching();
+  if(!base.length) return;
+  // Priorité aux questions jamais réussies, en complétant avec les autres au besoin
+  let ordered;
+  if(sel.nonReussies){
+    const jamais = shuffle(base.filter(q=>!(PROG[q.id]&&PROG[q.id].ok)));
+    const deja = shuffle(base.filter(q=>PROG[q.id]&&PROG[q.id].ok));
+    ordered = jamais.concat(deja);
+  } else {
+    ordered = shuffle(base.slice());
+  }
+  pool = sel.serie==="all" ? ordered : ordered.slice(0, sel.serie);
+  session = {total: pool.length, idx: 0, results: []};
   nextQuestion();
   showEx();
 }
+function recordResult(q, ok, skipped){
+  const i = session.results.findIndex(r=>r.id===q.id);
+  const entry = {id:q.id, op:q.operation, realite:q.realite_sociale_id, ok:!!ok, skipped:!!skipped, open:isOpen(q)};
+  if(i>=0) session.results[i]=entry; else session.results.push(entry);
+  if(!skipped) markProg(q.id, ok);
+}
 function nextQuestion(){
-  if(!pool.length){ showHome(); return; }
-  const i = Math.floor(Math.random()*pool.length);
-  current = pool.splice(i,1)[0];
+  if(!pool.length){ renderRecap(); return; }
+  current = pool.shift();
+  session.idx += 1;
   renderQuestion(current);
+}
+
+/* ====================== BILAN DE SÉRIE ====================== */
+function renderRecap(){
+  const res = session.results;
+  const okN = res.filter(r=>r.ok).length;
+  const skipN = res.filter(r=>r.skipped).length;
+  const workN = res.length - okN - skipN;
+  document.getElementById("sessCount").textContent = "Bilan de la série";
+  document.getElementById("sessFill").style.width = "100%";
+  document.getElementById("exReal").textContent = "Série terminée";
+  document.documentElement.style.setProperty("--accent","#8b3a2e");
+  document.documentElement.style.setProperty("--accent-bg","#f5e8d8");
+  const bravo = okN===res.length&&res.length?"Série parfaite — chapeau&nbsp;! 🎉"
+    : okN>=Math.ceil(res.length*0.7)?"Belle série, continue comme ça&nbsp;!"
+    : "C'est en s'exerçant qu'on s'améliore — chaque essai compte.";
+  let html = `<div class="recap">
+    <h2 class="recap-title">${bravo}</h2>
+    <div class="recap-stats">
+      <div class="rs"><span class="rs-n ok">${okN}</span><span class="rs-l">réussie${okN>1?"s":""}</span></div>
+      <div class="rs"><span class="rs-n work">${workN}</span><span class="rs-l">à retravailler</span></div>
+      <div class="rs"><span class="rs-n skip">${skipN}</span><span class="rs-l">passée${skipN>1?"s":""}</span></div>
+    </div>
+    <div class="recap-list">`;
+  res.forEach(r=>{
+    const rs = REAL_BY_ID[r.realite]||{};
+    const mark = r.ok ? '<span class="mk ok">✓</span>' : r.skipped ? '<span class="mk skip">→</span>' : '<span class="mk no">↻</span>';
+    html += `<div class="recap-row">${mark}<span class="rr-op">${esc(r.op)}</span><span class="rr-real" style="color:${rs.c||'#888'}">${esc(rs.titre||"")}</span></div>`;
+  });
+  html += `</div></div>`;
+  document.getElementById("qcard").innerHTML = html;
+  document.getElementById("answerZone").innerHTML = "";
+  document.getElementById("feedbackZone").innerHTML = "";
+  const aRetravailler = res.filter(r=>!r.ok).map(r=>QUESTIONS.find(q=>q.id===r.id)).filter(Boolean);
+  const f = document.getElementById("footZone");
+  f.innerHTML = (aRetravailler.length?`<button class="btn btn-primary" id="redoBtn">↻ Refaire celles à retravailler (${aRetravailler.length})</button>`:"")
+    + `<button class="btn ${aRetravailler.length?"btn-ghost":"btn-primary"}" id="newBtn">Composer une nouvelle série</button>`;
+  if(aRetravailler.length){
+    document.getElementById("redoBtn").onclick=()=>{
+      pool = shuffle(aRetravailler.slice());
+      session = {total: pool.length, idx: 0, results: []};
+      nextQuestion();
+    };
+  }
+  document.getElementById("newBtn").onclick=showHome;
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 function showHome(){ document.getElementById("screen-ex").classList.add("hidden");
   document.getElementById("realitesRail").classList.remove("hidden");
@@ -416,6 +646,8 @@ function applyAccent(q){
 }
 function renderQuestion(q){
   applyAccent(q);
+  document.getElementById("sessCount").textContent = `Question ${session.idx} / ${session.total}`;
+  document.getElementById("sessFill").style.width = (100*(session.idx-1)/Math.max(session.total,1)).toFixed(1)+"%";
   const b = q.questionBody;
   let html = `<div class="qop">${q.operation} · n°${q.numero}</div>
     <div class="qprompt">${esc(b.prompt||"")}</div>`;
@@ -506,13 +738,14 @@ function chronoOptions(q){
 /* ====================== FOOT (buttons) ====================== */
 function renderFoot(checked){
   const f=document.getElementById("footZone");
+  const last = pool.length===0;
   if(!checked){
     f.innerHTML = `<button class="btn btn-primary" id="checkBtn">Vérifier ma réponse</button>
        <button class="btn btn-soft" id="skipBtn">Passer →</button>`;
     document.getElementById("checkBtn").onclick=checkAnswer;
-    document.getElementById("skipBtn").onclick=()=>{ nextQuestion(); };
+    document.getElementById("skipBtn").onclick=()=>{ recordResult(current, false, true); nextQuestion(); };
   } else {
-    f.innerHTML = `<button class="btn btn-primary" id="nextBtn">Exercice suivant →</button>
+    f.innerHTML = `<button class="btn btn-primary" id="nextBtn">${last?"Voir mon bilan →":"Exercice suivant →"}</button>
        <button class="btn btn-ghost" id="retryBtn">↺ Réessayer</button>
        <button class="btn btn-soft" id="homeBtn">Changer de sujet</button>`;
     document.getElementById("nextBtn").onclick=()=>{ nextQuestion(); };
@@ -569,6 +802,7 @@ function checkClosed(q,kind){
   const cls=allOk?"good":"work";
   const icon=allOk?"✓":"!";
   const title=allOk?"Bravo, c'est juste&nbsp;!":"Presque&nbsp;! Regarde ceci";
+  recordResult(q, allOk);
   let html=`<div class="fb ${cls}"><h3><span class="ic">${icon}</span>${title}</h3>`;
   rows.forEach(r=> html+=`<div class="line"><span class="mk ${r.ok?'ok':'no'}">${r.ok?"✓":"✗"}</span><span>${r.txt}</span></div>`);
   html+=`</div>`;
@@ -595,15 +829,34 @@ async function checkOpen(q){
     if(fb.a_ameliorer) html+=`<div class="line"><span class="mk no">→</span><span><b>Pour aller plus loin :</b> ${esc(fb.a_ameliorer)}</span></div>`;
     if(fb.indice) html+=`<div class="blk"><b>💡 Indice :</b> ${esc(fb.indice)}</div>`;
     if(fb.encouragement) html+=`<p style="margin-top:12px">${esc(fb.encouragement)}</p>`;
-    html+=`</div>`+modelHtml(q,true);
+    html+=`</div>`+modelHtml(q,true)+selfEvalHtml();
     fz.innerHTML=html; renderFoot(true);
-    wireModelReveal();
+    wireModelReveal(); wireSelfEval(q);
   }catch(e){
     fz.innerHTML=`<div class="fb work"><h3><span class="ic">!</span>Rétroaction automatique indisponible</h3>
-      <p>L'analyse intelligente n'a pas pu se faire ici. Compare ta réponse avec la réponse modèle ci-dessous&nbsp;:</p></div>`+modelHtml(q);
-    renderFoot(true);
+      <p>L'analyse intelligente n'a pas pu se faire ici. Compare ta réponse avec la réponse modèle ci-dessous&nbsp;:</p></div>`+modelHtml(q)+selfEvalHtml();
+    renderFoot(true); wireSelfEval(q);
   }
+  recordResult(q, false);   // « faite » par défaut ; l'auto-évaluation peut la marquer réussie
   fz.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+/* ---------- auto-évaluation (questions rédigées) ---------- */
+function selfEvalHtml(){
+  return `<div class="self-eval" id="selfEval">
+    <span class="se-q">Après avoir comparé avec la réponse modèle, comment évalues-tu ta réponse&nbsp;?</span>
+    <button class="se-btn ok" data-se="ok">😊 Je l'avais</button>
+    <button class="se-btn no" data-se="no">↻ À retravailler</button>
+  </div>`;
+}
+function wireSelfEval(q){
+  const box=document.getElementById("selfEval"); if(!box) return;
+  box.querySelectorAll(".se-btn").forEach(b=>b.onclick=()=>{
+    const ok = b.dataset.se==="ok";
+    recordResult(q, ok);
+    box.innerHTML = ok ? `<span class="se-done">😊 Notée comme réussie — elle compte dans ta barre de maîtrise.</span>`
+                       : `<span class="se-done">↻ Notée à retravailler — tu pourras la recroiser avec «&nbsp;jamais réussies&nbsp;».</span>`;
+  });
 }
 
 async function aiFeedback(q,ans){
