@@ -208,6 +208,9 @@ textarea:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 4px var(--a
 .lbl-row select.lsel{flex:0 0 auto;min-width:230px;max-width:62%;font:inherit;font-size:16px;padding:10px 12px;
   border:1.5px solid var(--border-strong);border-radius:10px;background:#fff;color:var(--ink)}
 .lbl-row select.lsel:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-bg)}
+.missing{border-color:var(--gold) !important;box-shadow:0 0 0 4px #f6e7c8 !important;animation:missPulse .5s ease 1}
+.ba .item.missing{border:1.5px solid var(--gold);border-radius:10px}
+@keyframes missPulse{0%{transform:translateX(0)}25%{transform:translateX(-3px)}50%{transform:translateX(3px)}75%{transform:translateX(-2px)}100%{transform:translateX(0)}}
 .ll-block{margin:14px 0}
 .ll-block .lname{display:block;font-family:'Fraunces',serif;font-weight:600;font-size:16px;margin-bottom:6px;color:var(--accent)}
 .ll-block textarea.lblta{min-height:96px}
@@ -707,8 +710,9 @@ function renderAnswer(q){
     h += (rs.items||[]).map((it,i)=>`<div class="ll-block"><span class="lname">${esc(it)}</span>
       <textarea class="lblta" data-i="${i}" data-label="${esc(it)}" style="min-height:${hh}px" placeholder="Écris ta réponse en phrases complètes…"></textarea></div>`).join("");
   } else if(rs.type==="labeled-list"){
-    if(rs.options && rs.options.length){
-      const opts = rs.options.map(o=>`<option>${esc(o)}</option>`).join("");
+    const opts0 = (rs.options && rs.options.length) ? rs.options : autoOptions(q);
+    if(opts0 && opts0.length){
+      const opts = opts0.map(o=>`<option>${esc(o)}</option>`).join("");
       h += (rs.items||[]).map((it,i)=>`<div class="lbl-row"><span class="lname">${esc(it)}</span>
         <select class="lsel" data-i="${i}"><option value="">— choisir —</option>${opts}</select></div>`).join("");
     } else {
@@ -738,12 +742,43 @@ function renderAnswer(q){
     h += `<textarea id="ans" placeholder="Ta réponse…"></textarea>`;
   }
   z.innerHTML = h;
+  // anti-doublons pour le classement chronologique : une option choisie ailleurs devient indisponible
+  const chronoSels=[...z.querySelectorAll(".chrono select")];
+  if(chronoSels.length){
+    const sync=()=>{
+      const pris=chronoSels.map(s=>s.value).filter(Boolean);
+      chronoSels.forEach(s=>[...s.options].forEach(o=>{
+        if(o.value) o.disabled = pris.includes(o.value) && s.value!==o.value;
+      }));
+    };
+    chronoSels.forEach(s=>s.onchange=sync);
+  }
   // toggle behaviour for before-after
   z.querySelectorAll(".toggle").forEach(t=>{
     t.querySelectorAll("button").forEach(btn=>btn.onclick=()=>{
       t.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===btn));
     });
   });
+}
+/* Déduit des choix de menu pour les questions à lettres (zones A-B-C…) ou à numéros de document,
+   sans jamais révéler la réponse : toujours au moins 4 lettres (A à D minimum, étendu si le corrigé
+   va plus loin) ; pour les numéros, l'union des n° de documents et du corrigé. */
+function autoOptions(q){
+  const c=(q.corrige||[]).find(x=>x.kind==="lettres");
+  if(!c||!c.valeurs||!c.valeurs.length) return null;
+  const vals=c.valeurs.map(v=>String(v).trim());
+  if(vals.every(v=>/^[A-Za-z]$/.test(v))){
+    let max="D".charCodeAt(0);
+    vals.forEach(v=>{ max=Math.max(max, v.toUpperCase().charCodeAt(0)); });
+    const out=[]; for(let k="A".charCodeAt(0); k<=max; k++) out.push(String.fromCharCode(k));
+    return out;
+  }
+  if(vals.every(v=>/^\d+$/.test(v))){
+    const nums=new Set(vals.map(Number));
+    (q.documents||[]).forEach(d=>{ const m=/[Dd]ocument\s+(\d+)/.exec(d.title||""); if(m) nums.add(Number(m[1])); });
+    return [...nums].sort((a,b)=>a-b).map(String);
+  }
+  return null;
 }
 function baItems(q){ // documents to classify = union of corrige avant/apres, fallback to all docs
   const c=(q.corrige||[]).find(x=>x.kind==="avant_apres");
@@ -780,6 +815,15 @@ function norm(s){return (s||"").toString().toLowerCase()
   .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
   .replace(/document|doc|n°|n\.|n |[.\s]/g,"").trim();}
 
+/* Surligne un champ laissé vide ; la surbrillance disparaît dès que l'élève agit dessus */
+function flagMissing(el){
+  el.classList.add("missing");
+  const clear=()=>el.classList.remove("missing");
+  el.addEventListener("input",clear,{once:true});
+  el.addEventListener("change",clear,{once:true});
+  el.addEventListener("click",clear,{once:true});
+}
+
 function checkAnswer(){
   const q=current;
   const kind=(q.corrige&&q.corrige[0]&&q.corrige[0].kind)||"texte";
@@ -790,6 +834,16 @@ function checkAnswer(){
 function checkClosed(q,kind){
   const fz=document.getElementById("feedbackZone");
   const c=q.corrige[0];
+  // Garde : si rien n'est rempli, on invite à répondre sans enregistrer d'échec ni révéler le corrigé
+  let vide=false;
+  if(kind==="lettres") vide=[...document.querySelectorAll("#answerZone .short, #answerZone select")].every(x=>norm(x.value)==="");
+  else if(kind==="cases") vide=![...document.querySelectorAll('#answerZone .cbx input[type="checkbox"]')].some(x=>x.checked);
+  else if(kind==="avant_apres") vide=document.querySelectorAll("#answerZone .ba .toggle button.on").length===0;
+  if(vide){
+    fz.innerHTML=`<div class="fb work"><h3><span class="ic">!</span>Réponds d'abord</h3><p>Remplis ta réponse, puis clique sur «&nbsp;Vérifier&nbsp;». Si tu préfères, tu peux aussi cliquer sur «&nbsp;Passer&nbsp;».</p></div>`;
+    fz.scrollIntoView({behavior:"smooth",block:"nearest"});
+    return;
+  }
   let rows=[], allOk=true;
   if(kind==="lettres"){
     const inputs=[...document.querySelectorAll("#answerZone .short, #answerZone select")];
@@ -803,6 +857,7 @@ function checkClosed(q,kind){
         const idx = g!=="" ? restants.indexOf(g) : -1;
         const ok = idx>=0;
         if(ok) restants.splice(idx,1);
+        if(inputs[i] && g==="") flagMissing(inputs[i]);
         const dejaUtilisee = !ok && g!=="" && c.valeurs.map(norm).includes(g);
         allOk=allOk&&ok;
         const label = inputs[i] && inputs[i].closest(".lbl-row") ? inputs[i].closest(".lbl-row").querySelector(".lname").textContent : ("Élément "+(i+1));
@@ -815,6 +870,7 @@ function checkClosed(q,kind){
       const got=inputs[i]?inputs[i].value:"";
       const ok=norm(got)===norm(v) && norm(got)!=="";
       allOk=allOk&&ok;
+      if(inputs[i] && norm(got)==="") flagMissing(inputs[i]);
       const label = inputs[i] && inputs[i].closest(".lbl-row") ? inputs[i].closest(".lbl-row").querySelector(".lname").textContent
                    : (inputs[i] && inputs[i].closest(".slot") ? inputs[i].closest(".slot").querySelector(".rank").textContent : ("Élément "+(i+1)));
       rows.push({ok, txt:`${esc(label)} → tu as répondu «&nbsp;${esc(got||"—")}&nbsp;», réponse attendue «&nbsp;${esc(v)}&nbsp;».`});
@@ -835,9 +891,10 @@ function checkClosed(q,kind){
       const it=bl.querySelector(".iname").textContent;
       const onbtn=bl.querySelector(".toggle button.on");
       const got=onbtn?onbtn.dataset.v:"";
+      if(!got) flagMissing(bl);
       const expected=(c.avant||[]).map(norm).includes(norm(it))?"avant":"apres";
       const ok=got===expected; allOk=allOk&&ok;
-      rows.push({ok, txt:`${esc(it)} → ${ok?"bien situé":"à revoir"}.`});
+      rows.push({ok, txt:`${esc(it)} → ${ok?"bien situé":(got?"à revoir":"non classé")}.`});
     });
   }
   const cls=allOk?"good":"work";
@@ -969,7 +1026,16 @@ function modelHtml(q,hidden=false){
   if(c.kind==="texte") inner=esc(c.valeur||"");
   else if(c.kind==="lettres") inner=(c.valeurs||[]).join(" · ")+(c.ordreLibre?" <span style=\"opacity:.7\">(peu importe l'ordre)</span>":"");
   else if(c.kind==="avant_apres") inner=`Avant : ${(c.avant||[]).join(", ")||"—"} | Après : ${(c.apres||[]).join(", ")||"—"}`;
-  else if(c.kind==="cases") inner="Voir la disposition correcte des cases dans le tableau.";
+  else if(c.kind==="cases"){
+    const rs=(q.questionBody.responseSpace||[])[0]||{};
+    if(rs.rows&&rs.columns&&c.lignes){
+      inner=`<table class="cbx" style="margin-top:6px"><thead><tr><th></th>`+rs.columns.map(x=>`<th>${esc(x)}</th>`).join("")+`</tr></thead><tbody>`+
+        rs.rows.map((r,ri)=>`<tr><td class="rh">${esc(r)}</td>`+rs.columns.map((_,ci)=>{
+          const ch=c.lignes[ri]&&c.lignes[ri].cochees[ci]&&c.lignes[ri].cochees[ci].coche;
+          return `<td style="text-align:center;font-weight:700">${ch?"✓":""}</td>`;
+        }).join("")+`</tr>`).join("")+`</tbody></table>`;
+    } else inner="Voir la disposition correcte des cases dans le tableau.";
+  }
   if(hidden){
     return `<div style="margin-top:14px"><button class="btn btn-ghost" id="revealBtn">Voir une réponse modèle</button>
       <div class="model hidden" id="modelBox"><div class="mlab">Réponse modèle</div>${inner}</div></div>`;
