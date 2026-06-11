@@ -793,6 +793,24 @@ function checkClosed(q,kind){
   let rows=[], allOk=true;
   if(kind==="lettres"){
     const inputs=[...document.querySelectorAll("#answerZone .short, #answerZone select")];
+    if(c.ordreLibre){
+      // L'ordre des réponses n'a pas d'importance (ex. : nommer trois continents)
+      const restants = c.valeurs.map(norm);
+      const attendu = c.valeurs.join(" · ");
+      c.valeurs.forEach((v,i)=>{
+        const got=inputs[i]?inputs[i].value:"";
+        const g=norm(got);
+        const idx = g!=="" ? restants.indexOf(g) : -1;
+        const ok = idx>=0;
+        if(ok) restants.splice(idx,1);
+        const dejaUtilisee = !ok && g!=="" && c.valeurs.map(norm).includes(g);
+        allOk=allOk&&ok;
+        const label = inputs[i] && inputs[i].closest(".lbl-row") ? inputs[i].closest(".lbl-row").querySelector(".lname").textContent : ("Élément "+(i+1));
+        rows.push({ok, txt: ok
+          ? `${esc(label)} → «&nbsp;${esc(got)}&nbsp;» est une bonne réponse.`
+          : `${esc(label)} → ${got?(dejaUtilisee?`«&nbsp;${esc(got)}&nbsp;» a déjà été choisie&nbsp;: chaque réponse doit être différente`:`«&nbsp;${esc(got)}&nbsp;» ne fait pas partie des réponses attendues`):"réponse manquante"} (réponses attendues, peu importe l'ordre&nbsp;: ${esc(attendu)}).`});
+      });
+    } else {
     c.valeurs.forEach((v,i)=>{
       const got=inputs[i]?inputs[i].value:"";
       const ok=norm(got)===norm(v) && norm(got)!=="";
@@ -801,6 +819,7 @@ function checkClosed(q,kind){
                    : (inputs[i] && inputs[i].closest(".slot") ? inputs[i].closest(".slot").querySelector(".rank").textContent : ("Élément "+(i+1)));
       rows.push({ok, txt:`${esc(label)} → tu as répondu «&nbsp;${esc(got||"—")}&nbsp;», réponse attendue «&nbsp;${esc(v)}&nbsp;».`});
     });
+    }
   } else if(kind==="cases"){
     c.lignes.forEach((lg,ri)=>{
       lg.cochees.forEach((cell,ci)=>{
@@ -948,7 +967,7 @@ function modelHtml(q,hidden=false){
   const c=q.corrige&&q.corrige[0];
   if(!c) return "";
   if(c.kind==="texte") inner=esc(c.valeur||"");
-  else if(c.kind==="lettres") inner=(c.valeurs||[]).join(" · ");
+  else if(c.kind==="lettres") inner=(c.valeurs||[]).join(" · ")+(c.ordreLibre?" <span style=\"opacity:.7\">(peu importe l'ordre)</span>":"");
   else if(c.kind==="avant_apres") inner=`Avant : ${(c.avant||[]).join(", ")||"—"} | Après : ${(c.apres||[]).join(", ")||"—"}`;
   else if(c.kind==="cases") inner="Voir la disposition correcte des cases dans le tableau.";
   if(hidden){

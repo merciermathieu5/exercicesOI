@@ -2245,6 +2245,10 @@
             "items": [
               "Héliocentrisme →",
               "Géocentrisme →"
+            ],
+            "options": [
+              "Document 4",
+              "Document 5"
             ]
           }
         ]
@@ -6740,6 +6744,14 @@
               "John Locke",
               "Montesquieu",
               "Jean-Jacques Rousseau"
+            ],
+            "options": [
+              "Allemand",
+              "Anglais",
+              "Espagnol",
+              "Français",
+              "Italien",
+              "Suisse"
             ]
           }
         ]
@@ -8710,6 +8722,15 @@
               "Continent 1",
               "Continent 2",
               "Continent 3"
+            ],
+            "options": [
+              "Afrique",
+              "Amérique du Nord",
+              "Amérique du Sud",
+              "Antarctique",
+              "Asie",
+              "Europe",
+              "Océanie"
             ]
           }
         ]
@@ -8756,7 +8777,8 @@
             "Afrique",
             "Asie",
             "Europe"
-          ]
+          ],
+          "ordreLibre": true
         }
       ]
     },
@@ -11284,6 +11306,15 @@
               "Continent 1",
               "Continent 2",
               "Continent 3"
+            ],
+            "options": [
+              "Afrique",
+              "Amérique du Nord",
+              "Amérique du Sud",
+              "Antarctique",
+              "Asie",
+              "Europe",
+              "Océanie"
             ]
           }
         ]
@@ -11328,9 +11359,10 @@
           "kind": "lettres",
           "valeurs": [
             "Afrique",
-            "Europe",
-            "Asie"
-          ]
+            "Asie",
+            "Europe"
+          ],
+          "ordreLibre": true
         }
       ]
     },
