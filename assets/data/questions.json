@@ -1185,16 +1185,6 @@
       ],
       "documents": [
         {
-          "id": "t1-d1",
-          "title": "Document 1 : Ligne du temps",
-          "layout": "image-only",
-          "imageUrl": "assets/img/temps-1/img000.png",
-          "imageWidthCm": 12,
-          "sources": [
-            "Source : Mathieu Mercier."
-          ]
-        },
-        {
           "id": "t1-d2",
           "title": "Document 2 : La contre-réforme",
           "layout": "text-only",
@@ -10868,7 +10858,7 @@
         },
         {
           "id": "civ-r1-d3",
-          "title": "Documents 3 : Code d'Hammourabi",
+          "title": "Document 3 : Code d'Hammourabi",
           "layout": "image-only",
           "imageUrl": "assets/img/civ-relation-1/img001.png",
           "imageWidthCm": 5,
@@ -11273,7 +11263,7 @@
         },
         {
           "id": "civ-d1-d4",
-          "title": "Documents 4 : Cités-État antiques",
+          "title": "Document 4 : Cités-État antiques",
           "layout": "image-only",
           "imageUrl": "assets/img/civ-differences-1/img003.png",
           "imageWidthCm": 11,
@@ -11534,16 +11524,6 @@
         }
       ],
       "documents": [
-        {
-          "id": "civ-t1-d1",
-          "title": "Document 1 : L'Antiquité",
-          "layout": "image-only",
-          "imageUrl": "assets/img/civ-temps-1/img000.png",
-          "imageWidthCm": 13,
-          "sources": [
-            "Source : Mathieu Mercier."
-          ]
-        },
         {
           "id": "civ-t1-d2",
           "title": "Document 2 : Expressions de la culture",
@@ -12087,7 +12067,7 @@
         },
         {
           "id": "civ-r2-d2",
-          "title": "Documents 2 : Merveille du monde",
+          "title": "Document 2 : Merveille du monde",
           "layout": "image-only",
           "imageUrl": "assets/img/civ-relation-2/img001.png",
           "imageWidthCm": 7,

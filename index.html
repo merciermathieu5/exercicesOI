@@ -725,7 +725,9 @@ function renderAnswer(q){
         rs.columns.map((c,ci)=>`<td><input type="checkbox" data-r="${ri}" data-c="${ci}"></td>`).join("")+`</tr>`).join("")+
       `</tbody></table>`;
   } else if(rs.type==="before-after-axis"){
-    const items = shuffle(baItems(q));
+    // tri naturel (Document 1 avant Document 2…) : ordre stable qui ne révèle pas la réponse,
+    // contrairement à l'ordre brut du corrigé (items « avant » en premier)
+    const items = baItems(q).slice().sort((a,b)=>a.localeCompare(b,"fr",{numeric:true}));
     h += `<div class="hint" style="margin-bottom:8px">Pivot : <b>${esc(rs.pivot||"")}</b></div><div class="ba">`+
       items.map((it,i)=>`<div class="item"><span class="iname">${esc(it)}</span>
         <span class="toggle" data-i="${i}">
